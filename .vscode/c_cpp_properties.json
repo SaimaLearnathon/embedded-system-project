@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "compilerPath": "D:/MinGW/bin/gcc.exe",
+            "includePath": [
+                "${workspaceFolder}/libopencm3/include",
+                "${workspaceFolder}/app/inc",
+                "${workspaceFolder}"
+            ],
+            "defines": [
+                "STM32F4",
+                "__ARM_ARCH_7EM__"
+            ],
+            "cStandard": "c99",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}
