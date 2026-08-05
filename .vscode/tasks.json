@@ -23,6 +23,24 @@
       },
       "command": "make bin",
       "problemMatcher": "$gcc"
+    },
+    {
+      "type": "shell",
+      "label": "flash_stlink",
+      "options": {
+        "cwd": "app"
+      },
+      "command": "make bin && st-flash write firmware.bin 0x08000000",
+      "problemMatcher": []
+    },
+    {
+      "type": "shell",
+      "label": "flash_openocd",
+      "options": {
+        "cwd": "app"
+      },
+      "command": "make bin && openocd -f interface/stlink.cfg -f target/stm32f1x.cfg -c \"program firmware.bin verify reset exit 0x08000000\"",
+      "problemMatcher": []
     }
   ]
 }

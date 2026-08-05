@@ -9,8 +9,8 @@
                 "${workspaceFolder}"
             ],
             "defines": [
-                "STM32F4",
-                "__ARM_ARCH_7EM__"
+                "STM32F1",
+                "__ARM_ARCH_7M__"
             ],
             "cStandard": "c99",
             "cppStandard": "c++14",

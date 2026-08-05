@@ -4,47 +4,51 @@
       "name": "JLink: Debug Application",
       "cwd": "${workspaceFolder}/app",
       "executable": "./firmware.elf",
-      "servertype": "jlink",
+      "servertype": "openocd",
       "request": "launch",
       "type": "cortex-debug",
-      "device": "STM32F401RE",
+      "device": "STM32F103C8",
       "runToEntryPoint": "main",
       "interface": "swd",
+      "configFiles": ["interface/stlink.cfg", "target/stm32f1x.cfg"],
       "preLaunchTask": "build_debug"
     },
     {
       "name": "JLink: Attach to Application",
       "cwd": "${workspaceFolder}/app",
       "executable": "./firmware.elf",
-      "servertype": "jlink",
+      "servertype": "openocd",
       "request": "attach",
       "type": "cortex-debug",
-      "device": "STM32F401RE",
+      "device": "STM32F103C8",
       "runToEntryPoint": "main",
-      "interface": "swd"
+      "interface": "swd",
+      "configFiles": ["interface/stlink.cfg", "target/stm32f1x.cfg"]
     },
     {
       "name": "ST-Link: Debug Application",
       "cwd": "${workspaceFolder}/app",
       "executable": "./firmware.elf",
-      "servertype": "stutil",
+      "servertype": "openocd",
       "request": "launch",
       "type": "cortex-debug",
-      "device": "STM32F401RE",
+      "device": "STM32F103C8",
       "runToEntryPoint": "main",
       "interface": "swd",
+      "configFiles": ["interface/stlink.cfg", "target/stm32f1x.cfg"],
       "preLaunchTask": "build_debug"
     },
     {
       "name": "ST-Link: Attach to Application",
       "cwd": "${workspaceFolder}/app",
       "executable": "./firmware.elf",
-      "servertype": "stutil",
+      "servertype": "openocd",
       "request": "attach",
       "type": "cortex-debug",
-      "device": "STM32F401RE",
+      "device": "STM32F103C8",
       "runToEntryPoint": "main",
-"interface": "swd"
+      "interface": "swd",
+      "configFiles": ["interface/stlink.cfg", "target/stm32f1x.cfg"]
     }
    ]
 }

@@ -16,10 +16,10 @@ BINARY = firmware
 ###############################################################################
 # Basic Device Setup
 
-LIBNAME			= opencm3_stm32f4
-DEFS				+= -DSTM32F4
-FP_FLAGS		?= -mfloat-abi=hard -mfpu=fpv4-sp-d16
-ARCH_FLAGS	= -mthumb -mcpu=cortex-m4 $(FP_FLAGS)
+LIBNAME			= opencm3_stm32f1
+DEFS				+= -DSTM32F1
+FP_FLAGS		?=
+ARCH_FLAGS	= -mthumb -mcpu=cortex-m3 $(FP_FLAGS)
 
 ###############################################################################
 # Linkerscript
@@ -48,7 +48,7 @@ AS		:= $(PREFIX)as
 OBJCOPY		:= $(PREFIX)objcopy
 OBJDUMP		:= $(PREFIX)objdump
 GDB		:= $(PREFIX)gdb
-STFLASH		= $(shell which st-flash)
+STFLASH		?= st-flash
 OPT		:= -Os
 DEBUG		:= -ggdb3
 CSTD		?= -std=c99
@@ -120,6 +120,8 @@ GENERATED_BINARIES=$(BINARY).elf $(BINARY).bin $(BINARY).hex $(BINARY).srec $(BI
 
 images: $(BINARY).images
 flash: $(BINARY).flash
+stflash: $(BINARY).bin
+	$(Q)$(STFLASH) write $(BINARY).bin 0x08000000
 
 $(OPENCM3_DIR)/lib/lib$(LIBNAME).a:
 ifeq (,$(wildcard $@))
@@ -136,6 +138,9 @@ print-%:
 
 %.images: %.bin %.hex %.srec %.list %.map
 	@#printf "*** $* images generated ***\n"
+
+%.flash: %.bin
+	$(Q)$(STFLASH) write $(*).bin 0x08000000
 
 %.bin: %.elf
 	@#printf "  OBJCOPY $(*).bin\n"
