@@ -58,6 +58,7 @@ CSTD		?= -std=c99
 # Source files
 
 OBJS		+= $(SRC_DIR)/$(BINARY).o
+OBJS		+= $(SRC_DIR)/core/system.o
 
 
 ###############################################################################
@@ -119,9 +120,11 @@ list: $(BINARY).list
 GENERATED_BINARIES=$(BINARY).elf $(BINARY).bin $(BINARY).hex $(BINARY).srec $(BINARY).list $(BINARY).map
 
 images: $(BINARY).images
-flash: $(BINARY).flash
-stflash: $(BINARY).bin
+flash: $(BINARY).bin
 	$(Q)$(STFLASH) write $(BINARY).bin 0x08000000
+stflash: flash
+erase: $(BINARY).elf
+	$(Q)$(STFLASH) erase
 
 $(OPENCM3_DIR)/lib/lib$(LIBNAME).a:
 ifeq (,$(wildcard $@))
@@ -183,6 +186,6 @@ clean:
 	$(Q)$(RM) $(GENERATED_BINARIES) generated.* $(OBJS) $(OBJS:%.o=%.d)
 
 
-.PHONY: images clean elf bin hex srec list
+.PHONY: images clean elf bin hex srec list flash stflash erase
 
 -include $(OBJS:.o=.d)

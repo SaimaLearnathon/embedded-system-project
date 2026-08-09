@@ -1,5 +1,4 @@
-#ifndef IN_COMMON_DEFINES_H
-
+#ifndef INC_COMMON_DEFINES_H
 #define INC_COMMON_DEFINES_H
 
 #include <stdint.h>
