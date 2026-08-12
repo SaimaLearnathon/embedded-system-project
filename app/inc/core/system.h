@@ -3,7 +3,7 @@
 
 #include "common-defense.h"
 
-#define BLINK_PERIOD_MS  500
+#define BLINK_PERIOD_MS  2000
 
 /* Initialise RCC, GPIO (on-board LED) and the SysTick 1 ms tick. */
 void system_setup(void);

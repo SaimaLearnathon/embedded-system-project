@@ -863,24 +863,24 @@ LOAD linker stubs
  .debug_line    0x0000204a      0x325 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
  .debug_line    0x0000236f      0x2d3 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
 
-.debug_str      0x00000000     0xeb25
- .debug_str     0x00000000     0xeb25 src/firmware.o
-                               0xb05b (size before relaxing)
- .debug_str     0x0000eb25        0x0 src/core/system.o
-                               0x7a06 (size before relaxing)
- .debug_str     0x0000eb25        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
+.debug_str      0x00000000     0xeb26
+ .debug_str     0x00000000     0xeb26 src/firmware.o
+                               0xb05c (size before relaxing)
+ .debug_str     0x0000eb26        0x0 src/core/system.o
+                               0x7a07 (size before relaxing)
+ .debug_str     0x0000eb26        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
                                0x87e5 (size before relaxing)
- .debug_str     0x0000eb25        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
+ .debug_str     0x0000eb26        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
                                0x87d9 (size before relaxing)
- .debug_str     0x0000eb25        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+ .debug_str     0x0000eb26        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
                                0x843a (size before relaxing)
- .debug_str     0x0000eb25        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
+ .debug_str     0x0000eb26        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
                                0x7b48 (size before relaxing)
- .debug_str     0x0000eb25        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+ .debug_str     0x0000eb26        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
                                0x687e (size before relaxing)
- .debug_str     0x0000eb25        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+ .debug_str     0x0000eb26        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
                                0x470f (size before relaxing)
- .debug_str     0x0000eb25        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
+ .debug_str     0x0000eb26        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
                                0x571e (size before relaxing)
 
 .comment        0x00000000       0x46
