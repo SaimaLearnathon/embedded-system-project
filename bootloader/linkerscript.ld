@@ -1,6 +1,6 @@
 /*
- * Linker script for an STM32F1 high-density device application
- * 224 KiB app flash @ 0x08008000, 64 KiB SRAM @ 0x20000000
+ * Linker script for an STM32F1 high-density device
+ * 32 KiB bootloader flash @ 0x08000000, 64 KiB SRAM @ 0x20000000
  */
 
 /* Enforce emission of the vector table. */
@@ -13,14 +13,13 @@ ENTRY(reset_handler)
 MEMORY
 {
 	ram (rwx) : ORIGIN = 0x20000000, LENGTH = 64K
-	rom (rx)  : ORIGIN = 0x08008000, LENGTH = 224K
+	rom (rx)  : ORIGIN = 0x08000000, LENGTH = 32K
 }
 
 /* Define sections. */
 SECTIONS
 {
 	.text : {
-		KEEP (*(.bootloader-section))
 		*(.vectors)	/* Vector table */
 		*(.text*)	/* Program code */
 		. = ALIGN(4);

@@ -1,11 +1,18 @@
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>
+#include <libopencm3/cm3/scb.h>
 
 #include "core/system.h"
+
+#define BOOTLOADER_SIZE (0x8000U)
 
 /* BluePill on-board LED, active-low, on PC13. */
 #define LED_PORT  GPIOC
 #define LED_PIN   GPIO13
+
+static void vector_setup(void){
+	 SCB_VTOR = BOOTLOADER_SIZE;
+}
 
 static void gpio_setup(void)
 {
@@ -16,7 +23,8 @@ static void gpio_setup(void)
 }
 
 int main(void)
-{
+{ 
+	vector_setup();
 	system_setup();
 	gpio_setup();
 

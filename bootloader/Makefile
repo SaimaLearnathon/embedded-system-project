@@ -11,7 +11,7 @@ OPENCM3_DIR    = ../libopencm3
 SHARED_SRC_DIR = ../shared/src
 SHARED_INC_DIR = ../shared/inc
 
-BINARY = firmware
+BINARY = bootloader
 
 ###############################################################################
 # Basic Device Setup
@@ -58,8 +58,7 @@ CSTD		?= -std=c99
 # Source files
 
 OBJS		+= $(SRC_DIR)/$(BINARY).o
-OBJS		+= $(SRC_DIR)/core/system.o
-OBJS		+= $(SRC_DIR)/core/bootloader.o
+
 
 
 ###############################################################################
@@ -122,7 +121,7 @@ GENERATED_BINARIES=$(BINARY).elf $(BINARY).bin $(BINARY).hex $(BINARY).srec $(BI
 
 images: $(BINARY).images
 flash: $(BINARY).bin
-	$(Q)$(STFLASH) write $(BINARY).bin 0x08008000
+	$(Q)$(STFLASH) write $(BINARY).bin 0x08000000
 stflash: flash
 erase: $(BINARY).elf
 	$(Q)$(STFLASH) erase
@@ -144,11 +143,12 @@ print-%:
 	@#printf "*** $* images generated ***\n"
 
 %.flash: %.bin
-	$(Q)$(STFLASH) write $(*).bin 0x08008000
+	$(Q)$(STFLASH) write $(*).bin 0x08000000
 
 %.bin: %.elf
 	@#printf "  OBJCOPY $(*).bin\n"
 	$(Q)$(OBJCOPY) -Obinary $(*).elf $(*).bin
+	python pad-bootloader.py
 
 %.hex: %.elf
 	@#printf "  OBJCOPY $(*).hex\n"

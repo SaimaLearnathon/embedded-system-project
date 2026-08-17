@@ -5,6 +5,7 @@
             "compilerPath": "D:/MinGW/bin/gcc.exe",
             "includePath": [
                 "${workspaceFolder}/libopencm3/include",
+                "${workspaceFolder}/bootloader/inc",
                 "${workspaceFolder}/app/inc",
                 "${workspaceFolder}"
             ],
