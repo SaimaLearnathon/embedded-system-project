@@ -5,12 +5,15 @@
 #include <stddef.h>
 
 #include "core/uart.h"  
-
-static volatile uint8_t data_buffer = 0U;
+#include "core/ring-buffer.h"
+#define RING_BUFFER_SIZE (64)
+static volatile uint8_t data_buffer[RING_BUFFER_SIZE] = {0U};
 static volatile bool data_available = false;
 
+static ring_buffer_t rb = {0U};
 void uart_setup(void)
 {
+	ring_buffer_setup(&rb,data_buffer,RING_BUFFER_SIZE);
 	rcc_periph_clock_enable(RCC_GPIOA);
 	rcc_periph_clock_enable(RCC_USART1);
 
@@ -37,8 +40,11 @@ void usart1_isr(void)
 	const bool received_data = usart_get_flag(USART1, USART_FLAG_RXNE) != 0;
 
 	if (received_data || overrun_occurred) {
-		data_buffer = (uint8_t)usart_recv(USART1);
-		data_available = true;
+
+		if(!ring_buffer_write(&rb , (uint8_t) usart_recv(USART1))){
+			//handle failure 
+		}
+		
 	}
 }
 
@@ -60,22 +66,25 @@ void uart_write_byte(uint8_t data)
 
 uint32_t uart_read(uint8_t *data, const uint32_t length)
 {
-	if ((data == NULL) || (length == 0U) || !data_available) {
-		return 0U;
+	if ( length==0 ) return 0;
+	for(uint32_t i =0 ;i<length;i++){
+		if(!ring_buffer_read(&rb, &data[i])){
+        return i;
+		}
 	}
+	return length;
 
-	*data = data_buffer;
-	data_available = false;
-	return 1U;
 }
 
 uint8_t uart_read_byte(void)
 {
-	data_available = false;
-	return data_buffer;
+	uint8_t byte = 0;
+	(void)uart_read(&byte,1);
+	return byte ; 
+
 }
 
 bool uart_data_available(void)
 {
-	return data_available;
+	return !ring_buffer_empty(&rb);
 }

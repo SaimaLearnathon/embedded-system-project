@@ -47,6 +47,7 @@ int main(void)
 			uint8_t data=uart_read_byte();
 			uart_write_byte(data + 1);
 		}
+		system_delay(1000);
 		__asm__("wfi");  /* sleep until the next SysTick exception */
 	}
 
