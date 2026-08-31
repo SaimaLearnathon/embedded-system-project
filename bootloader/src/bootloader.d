@@ -7,6 +7,8 @@ src/bootloader.o: src/bootloader.c inc/common-defines.h \
  D:/arm-none-eabi/include/sys/_intsup.h \
  D:/arm-none-eabi/include/sys/_stdint.h \
  D:/lib/gcc/arm-none-eabi/15.3.1/include/stdbool.h \
+ ../libopencm3/include/libopencm3/cm3/scb.h \
+ ../libopencm3/include/libopencm3/cm3/memorymap.h \
+ ../libopencm3/include/libopencm3/cm3/common.h \
  ../libopencm3/include/libopencm3/stm32/memorymap.h \
- ../libopencm3/include/libopencm3/stm32/f1/memorymap.h \
- ../libopencm3/include/libopencm3/cm3/memorymap.h
+ ../libopencm3/include/libopencm3/stm32/f1/memorymap.h

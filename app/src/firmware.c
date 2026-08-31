@@ -3,15 +3,17 @@
 #include <libopencm3/cm3/scb.h>
 
 #include "core/system.h"
+#include "core/uart.h"
 
 #define BOOTLOADER_SIZE (0x8000U)
+#define APP_START_ADDRESS (0x08000000U + BOOTLOADER_SIZE)
 
 /* BluePill on-board LED, active-low, on PC13. */
 #define LED_PORT  GPIOC
 #define LED_PIN   GPIO13
 
 static void vector_setup(void){
-	 SCB_VTOR = BOOTLOADER_SIZE;
+	SCB_VTOR = APP_START_ADDRESS;
 }
 
 static void gpio_setup(void)
@@ -27,13 +29,23 @@ int main(void)
 	vector_setup();
 	system_setup();
 	gpio_setup();
+	uart_setup();
+
+	static uint8_t startup_msg[] = "Hello from STM32 USART1\r\n";
+	uart_write(startup_msg, sizeof(startup_msg) - 1U);
 
 	uint32_t last_toggle = 0;
 	while (1) {
 		uint32_t now = system_get_ticks();
 		if ((now - last_toggle) >= BLINK_PERIOD_MS) {
 			gpio_toggle(LED_PORT, LED_PIN);  /* active-low: toggle ON/OFF */
+			static uint8_t heartbeat_msg[] = "UART heartbeat\r\n";
+			uart_write(heartbeat_msg, sizeof(heartbeat_msg) - 1U);
 			last_toggle = now;
+		}
+		if(uart_data_available()){
+			uint8_t data=uart_read_byte();
+			uart_write_byte(data + 1);
 		}
 		__asm__("wfi");  /* sleep until the next SysTick exception */
 	}

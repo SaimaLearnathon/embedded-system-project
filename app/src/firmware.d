@@ -17,5 +17,5 @@ src/firmware.o: src/firmware.c \
  ../libopencm3/include/libopencm3/stm32/gpio.h \
  ../libopencm3/include/libopencm3/stm32/f1/gpio.h \
  ../libopencm3/include/libopencm3/stm32/common/gpio_common_all.h \
- ../libopencm3/include/libopencm3/cm3/scb.h inc/core/system.h \
- inc/common-defense.h
+ ../libopencm3/include/libopencm3/cm3/scb.h ../shared/inc/core/system.h \
+ inc/common-defines.h ../shared/inc/core/uart.h

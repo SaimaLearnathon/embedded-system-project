@@ -1,4 +1,4 @@
-src/core/system.o: src/core/system.c \
+../shared/src/core/system.o: ../shared/src/core/system.c \
  ../libopencm3/include/libopencm3/stm32/rcc.h \
  ../libopencm3/include/libopencm3/cm3/common.h \
  D:/lib/gcc/arm-none-eabi/15.3.1/include/stdint.h \
@@ -14,5 +14,5 @@ src/core/system.o: src/core/system.c \
  ../libopencm3/include/libopencm3/cm3/memorymap.h \
  ../libopencm3/include/libopencm3/stm32/f1/rcc.h \
  ../libopencm3/include/libopencm3/stm32/common/rcc_common_all.h \
- ../libopencm3/include/libopencm3/cm3/systick.h inc/core/system.h \
- inc/common-defense.h
+ ../libopencm3/include/libopencm3/cm3/systick.h \
+ ../shared/inc/core/system.h inc/common-defines.h

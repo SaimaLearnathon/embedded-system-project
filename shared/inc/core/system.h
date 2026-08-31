@@ -1,7 +1,7 @@
 #ifndef INC_CORE_SYSTEM_H
 #define INC_CORE_SYSTEM_H
 
-#include "common-defense.h"
+#include "common-defines.h"
 
 #define BLINK_PERIOD_MS  2000
 
