@@ -608,7 +608,63 @@ One slot is sacrificed to distinguish:
 
 So a `64`-byte ring buffer can store at most `63` unread bytes.
 
-### 3. The code is simple and efficient
+### 3. Sizing a UART ring buffer
+
+Choose a buffer large enough to hold every byte that can arrive while the
+application is busy and cannot consume UART data. Size it for the longest
+realistic gap between reads, not the average gap.
+
+For a typical UART configuration of 8 data bits, no parity, and one stop bit
+(`8N1`), each transmitted byte occupies 10 bits on the wire:
+
+```text
+1 start bit + 8 data bits + 1 stop bit = 10 bits per byte
+```
+
+At the `115200` baud rate used in `uart.c`:
+
+```text
+115200 bits/second / 10 bits/byte = 11520 bytes/second
+                                      = 11.52 bytes/millisecond
+```
+
+If the application could go 10 ms without reading the buffer, the receive
+interrupt may need to queue:
+
+```text
+11.52 bytes/ms * 10 ms = 115.2 bytes
+```
+
+Round this up to 116 bytes. This ring buffer deliberately reserves one array
+slot to distinguish a full buffer from an empty one, so the usable capacity
+must be at least 116 bytes. The next power-of-two array size is `128`, which
+has a usable capacity of `127` bytes:
+
+```text
+bytes_needed = ceil((baud_rate / bits_per_byte) * worst_case_busy_seconds)
+array_size   = next_power_of_two(bytes_needed + 1)
+```
+
+For the 115200-baud, 10-ms example:
+
+```text
+bytes_needed = ceil((115200 / 10) * 0.010) = 116
+array_size   = next_power_of_two(116 + 1) = 128
+```
+
+The power-of-two requirement is not only a safety margin. It is required by
+the fast wraparound expression used by this implementation:
+
+```c
+(index + 1) & (size - 1)
+```
+
+With the current `RING_BUFFER_SIZE` of `64`, only `63` bytes are usable. At
+115200 baud, that covers roughly 5.5 ms of uninterrupted incoming `8N1` data.
+If the main loop can be busy for longer than that, increase the array size,
+for example to `128`.
+
+### 4. The code is simple and efficient
 
 This implementation is useful in embedded systems because:
 
@@ -616,7 +672,7 @@ This implementation is useful in embedded systems because:
 - read/write operations are constant time
 - the wraparound logic is cheap
 
-### 4. Concurrent access needs care
+### 5. Concurrent access needs care
 
 In this project, the buffer is written from the UART interrupt and read from normal code. That is a common pattern, but it also means correctness depends on how the compiler and target handle shared state.
 

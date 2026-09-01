@@ -17,7 +17,7 @@ static void vector_setup(void){
 }
 
 static void gpio_setup(void)
-{
+{	
 	/* Enable port C clock and configure PC13 as 2 MHz push-pull output. */
 	rcc_periph_clock_enable(RCC_GPIOC);
 	gpio_set_mode(LED_PORT, GPIO_MODE_OUTPUT_2_MHZ,
@@ -30,6 +30,7 @@ int main(void)
 	system_setup();
 	gpio_setup();
 	uart_setup();
+
 
 	static uint8_t startup_msg[] = "Hello from STM32 USART1\r\n";
 	uart_write(startup_msg, sizeof(startup_msg) - 1U);
