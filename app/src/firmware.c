@@ -39,16 +39,14 @@ int main(void)
 		uint32_t now = system_get_ticks();
 		if ((now - last_toggle) >= BLINK_PERIOD_MS) {
 			gpio_toggle(LED_PORT, LED_PIN);  /* active-low: toggle ON/OFF */
-			static uint8_t heartbeat_msg[] = "UART heartbeat\r\n";
-			uart_write(heartbeat_msg, sizeof(heartbeat_msg) - 1U);
+
 			last_toggle = now;
 		}
-		if(uart_data_available()){
+		while (uart_data_available()) {
 			uint8_t data=uart_read_byte();
 			uart_write_byte(data + 1);
 		}
-		system_delay(1000);
-		__asm__("wfi");  /* sleep until the next SysTick exception */
+		__asm__("wfi");  /* Sleep until SysTick or a UART interrupt. */
 	}
 
 	return 0;

@@ -20,7 +20,6 @@ MEMORY
 SECTIONS
 {
 	.text : {
-		KEEP (*(.bootloader-section))
 		*(.vectors)	/* Vector table */
 		*(.text*)	/* Program code */
 		. = ALIGN(4);

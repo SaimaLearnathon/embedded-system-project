@@ -1,8 +1,7 @@
 # Embedded_system
 
-Bare-metal firmware experiments for the **STM32F103** (Cortex-M3), targeting the
-[BluePill](https://stm32-base.org/boards/board-STM32F103C8T6-STM32F103CBT6-Blue-Pill.html)
-board (or the high-density STM32F103 variant). The project uses the
+Bare-metal firmware experiments for a high-density **STM32F103** (Cortex-M3)
+with 256 KiB Flash and 64 KiB SRAM. The project uses the
 [libopencm3](https://github.com/libopencm3/libopencm3) peripheral register
 library and is built with a standard GNU Arm cross-toolchain.
 
@@ -24,10 +23,10 @@ library and is built with a standard GNU Arm cross-toolchain.
 
 | Item | Value |
 |------|-------|
-| MCU | STM32F103C8T6 (BluePill) / STM32F103 high-density |
+| MCU | STM32F103 high-density, 256 KiB Flash |
 | Core | ARM Cortex-M3 @ 72 MHz |
-| Flash | 64 KiB @ `0x08000000` |
-| SRAM  | 20 KiB @ `0x20000000` |
+| Flash | 256 KiB @ `0x08000000` |
+| SRAM | 64 KiB @ `0x20000000` |
 | Demo LED | PC13 (active-low) |
 | Debug probe | ST-Link V2 (SWD) or J-Link |
 
@@ -65,11 +64,11 @@ Build the libopencm3 library once (it ends up in `libopencm3/lib/libopencm3_stm3
 make -C libopencm3 TARGETS=stm32/f1
 ```
 
-Build the firmware (from the `app/` directory):
+Build both images:
 
 ```bash
-cd app
-make            # produces firmware.elf, firmware.bin, firmware.hex, ...
+make -C bootloader
+make -C app
 ```
 
 Other targets:
@@ -85,17 +84,18 @@ make print-OPENCM3_DIR   # debug a make variable
 ### ST-Link (`st-flash`)
 
 ```bash
-cd app
-make stflash     # builds firmware.bin and runs: st-flash write firmware.bin 0x08000000
+make -C bootloader stflash  # bootloader.bin -> 0x08000000
+make -C app stflash         # firmware.bin -> 0x08008000
 ```
 
 ### OpenOCD
 
 ```bash
-cd app
-make bin
+make -C bootloader bin
+make -C app bin
 openocd -f interface/stlink.cfg -f target/stm32f1x.cfg \
-        -c "program firmware.bin verify reset exit 0x08000000"
+        -c "program bootloader/bootloader.bin verify 0x08000000" \
+        -c "program app/firmware.bin verify reset exit 0x08008000"
 ```
 
 ## Debugging

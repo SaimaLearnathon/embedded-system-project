@@ -97,8 +97,6 @@ Discarded input sections
  .text          0x00000000        0x0 ../shared/src/core/uart.o
  .data          0x00000000        0x0 ../shared/src/core/uart.o
  .bss           0x00000000        0x0 ../shared/src/core/uart.o
- .text.uart_read
-                0x00000000       0x2c ../shared/src/core/uart.o
  .debug_macro   0x00000000      0xad2 ../shared/src/core/uart.o
  .debug_macro   0x00000000       0x1c ../shared/src/core/uart.o
  .debug_macro   0x00000000       0x22 ../shared/src/core/uart.o
@@ -114,6 +112,27 @@ Discarded input sections
  .debug_macro   0x00000000       0x76 ../shared/src/core/uart.o
  .debug_macro   0x00000000      0xe2e ../shared/src/core/uart.o
  .debug_macro   0x00000000      0x8c6 ../shared/src/core/uart.o
+ .group         0x00000000        0xc ../shared/src/core/ring-buffer.o
+ .group         0x00000000        0xc ../shared/src/core/ring-buffer.o
+ .group         0x00000000        0xc ../shared/src/core/ring-buffer.o
+ .group         0x00000000        0xc ../shared/src/core/ring-buffer.o
+ .group         0x00000000        0xc ../shared/src/core/ring-buffer.o
+ .group         0x00000000        0xc ../shared/src/core/ring-buffer.o
+ .group         0x00000000        0xc ../shared/src/core/ring-buffer.o
+ .group         0x00000000        0xc ../shared/src/core/ring-buffer.o
+ .group         0x00000000        0xc ../shared/src/core/ring-buffer.o
+ .text          0x00000000        0x0 ../shared/src/core/ring-buffer.o
+ .data          0x00000000        0x0 ../shared/src/core/ring-buffer.o
+ .bss           0x00000000        0x0 ../shared/src/core/ring-buffer.o
+ .debug_macro   0x00000000      0xad2 ../shared/src/core/ring-buffer.o
+ .debug_macro   0x00000000       0x22 ../shared/src/core/ring-buffer.o
+ .debug_macro   0x00000000       0x56 ../shared/src/core/ring-buffer.o
+ .debug_macro   0x00000000       0x6d ../shared/src/core/ring-buffer.o
+ .debug_macro   0x00000000      0x103 ../shared/src/core/ring-buffer.o
+ .debug_macro   0x00000000       0x6a ../shared/src/core/ring-buffer.o
+ .debug_macro   0x00000000      0x1d0 ../shared/src/core/ring-buffer.o
+ .debug_macro   0x00000000       0x22 ../shared/src/core/ring-buffer.o
+ .debug_macro   0x00000000      0x189 ../shared/src/core/ring-buffer.o
  .group         0x00000000        0xc ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
  .group         0x00000000        0xc ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
  .group         0x00000000        0xc ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
@@ -645,6 +664,7 @@ Linker script and memory map
 LOAD src/firmware.o
 LOAD ../shared/src/core/system.o
 LOAD ../shared/src/core/uart.o
+LOAD ../shared/src/core/ring-buffer.o
 LOAD ../libopencm3/lib\libopencm3_stm32f1.a
 START GROUP
 LOAD D:/bin/../lib/gcc/arm-none-eabi/15.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc.a
@@ -657,415 +677,430 @@ LOAD D:/bin/../lib/gcc/arm-none-eabi/15.3.1/../../../../arm-none-eabi/lib/thumb/
 LOAD D:/bin/../lib/gcc/arm-none-eabi/15.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc.a
 END GROUP
 
-.text           0x08008000      0x8a4
- *(.bootloader-section)
+.text           0x08008000      0x960
  *(.vectors)
  .vectors       0x08008000      0x150 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
                 0x08008000                vector_table
  *(.text*)
  .text.startup.main
-                0x08008150       0x7c src/firmware.o
+                0x08008150       0x70 src/firmware.o
                 0x08008150                main
  .text.system_setup
-                0x080081cc       0x2c ../shared/src/core/system.o
-                0x080081cc                system_setup
+                0x080081c0       0x2c ../shared/src/core/system.o
+                0x080081c0                system_setup
  .text.sys_tick_handler
-                0x080081f8       0x10 ../shared/src/core/system.o
-                0x080081f8                sys_tick_handler
+                0x080081ec       0x10 ../shared/src/core/system.o
+                0x080081ec                sys_tick_handler
  .text.system_get_ticks
-                0x08008208        0xc ../shared/src/core/system.o
-                0x08008208                system_get_ticks
+                0x080081fc        0xc ../shared/src/core/system.o
+                0x080081fc                system_get_ticks
  .text.uart_setup
-                0x08008214       0x80 ../shared/src/core/uart.o
-                0x08008214                uart_setup
+                0x08008208       0x98 ../shared/src/core/uart.o
+                0x08008208                uart_setup
  .text.usart1_isr
-                0x08008294       0x38 ../shared/src/core/uart.o
-                0x08008294                usart1_isr
+                0x080082a0       0x34 ../shared/src/core/uart.o
+                0x080082a0                usart1_isr
  .text.uart_write_byte
-                0x080082cc        0xc ../shared/src/core/uart.o
-                0x080082cc                uart_write_byte
+                0x080082d4        0xc ../shared/src/core/uart.o
+                0x080082d4                uart_write_byte
  .text.uart_write
-                0x080082d8       0x18 ../shared/src/core/uart.o
-                0x080082d8                uart_write
+                0x080082e0       0x18 ../shared/src/core/uart.o
+                0x080082e0                uart_write
+ .text.uart_read
+                0x080082f8       0x2c ../shared/src/core/uart.o
+                0x080082f8                uart_read
  .text.uart_read_byte
-                0x080082f0       0x14 ../shared/src/core/uart.o
-                0x080082f0                uart_read_byte
+                0x08008324       0x1a ../shared/src/core/uart.o
+                0x08008324                uart_read_byte
+ *fill*         0x0800833e        0x2 
  .text.uart_data_available
-                0x08008304        0xc ../shared/src/core/uart.o
-                0x08008304                uart_data_available
+                0x08008340       0x14 ../shared/src/core/uart.o
+                0x08008340                uart_data_available
+ .text.ring_buffer_setup
+                0x08008354       0x1e ../shared/src/core/ring-buffer.o
+                0x08008354                ring_buffer_setup
+ .text.ring_buffer_empty
+                0x08008372       0x12 ../shared/src/core/ring-buffer.o
+                0x08008372                ring_buffer_empty
+ .text.ring_buffer_read
+                0x08008384       0x26 ../shared/src/core/ring-buffer.o
+                0x08008384                ring_buffer_read
+ .text.ring_buffer_write
+                0x080083aa       0x22 ../shared/src/core/ring-buffer.o
+                0x080083aa                ring_buffer_write
  .text.gpio_set_mode
-                0x08008310       0x6a ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
-                0x08008310                gpio_set_mode
+                0x080083cc       0x6a ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
+                0x080083cc                gpio_set_mode
  .text.gpio_toggle
-                0x0800837a       0x12 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
-                0x0800837a                gpio_toggle
+                0x08008436       0x12 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
+                0x08008436                gpio_toggle
  .text.rcc_is_osc_ready
-                0x0800838c       0x58 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x0800838c                rcc_is_osc_ready
+                0x08008448       0x58 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x08008448                rcc_is_osc_ready
  .text.rcc_wait_for_osc_ready
-                0x080083e4       0x10 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x080083e4                rcc_wait_for_osc_ready
+                0x080084a0       0x10 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x080084a0                rcc_wait_for_osc_ready
  .text.rcc_osc_on
-                0x080083f4       0x60 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x080083f4                rcc_osc_on
+                0x080084b0       0x60 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x080084b0                rcc_osc_on
  .text.rcc_set_sysclk_source
-                0x08008454       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x08008454                rcc_set_sysclk_source
+                0x08008510       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x08008510                rcc_set_sysclk_source
  .text.rcc_set_pll_multiplication_factor
-                0x08008468       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x08008468                rcc_set_pll_multiplication_factor
+                0x08008524       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x08008524                rcc_set_pll_multiplication_factor
  .text.rcc_set_pll2_multiplication_factor
-                0x0800847c       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x0800847c                rcc_set_pll2_multiplication_factor
+                0x08008538       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x08008538                rcc_set_pll2_multiplication_factor
  .text.rcc_set_pll3_multiplication_factor
-                0x08008490       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x08008490                rcc_set_pll3_multiplication_factor
+                0x0800854c       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x0800854c                rcc_set_pll3_multiplication_factor
  .text.rcc_set_pll_source
-                0x080084a4       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x080084a4                rcc_set_pll_source
+                0x08008560       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x08008560                rcc_set_pll_source
  .text.rcc_set_pllxtpre
-                0x080084b8       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x080084b8                rcc_set_pllxtpre
+                0x08008574       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x08008574                rcc_set_pllxtpre
  .text.rcc_set_adcpre
-                0x080084cc       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x080084cc                rcc_set_adcpre
+                0x08008588       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x08008588                rcc_set_adcpre
  .text.rcc_set_ppre2
-                0x080084e0       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x080084e0                rcc_set_ppre2
+                0x0800859c       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x0800859c                rcc_set_ppre2
  .text.rcc_set_ppre1
-                0x080084f4       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x080084f4                rcc_set_ppre1
+                0x080085b0       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x080085b0                rcc_set_ppre1
  .text.rcc_set_hpre
-                0x08008508       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x08008508                rcc_set_hpre
+                0x080085c4       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x080085c4                rcc_set_hpre
  .text.rcc_set_usbpre
-                0x0800851c       0x18 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x0800851c                rcc_set_usbpre
+                0x080085d8       0x18 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x080085d8                rcc_set_usbpre
  .text.rcc_set_prediv1
-                0x08008534       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x08008534                rcc_set_prediv1
+                0x080085f0       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x080085f0                rcc_set_prediv1
  .text.rcc_set_prediv2
-                0x08008548       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x08008548                rcc_set_prediv2
+                0x08008604       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x08008604                rcc_set_prediv2
  .text.rcc_set_prediv1_source
-                0x0800855c       0x18 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x0800855c                rcc_set_prediv1_source
+                0x08008618       0x18 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x08008618                rcc_set_prediv1_source
  .text.rcc_clock_setup_pll
-                0x08008574       0xbc ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x08008574                rcc_clock_setup_pll
+                0x08008630       0xbc ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x08008630                rcc_clock_setup_pll
  .text.rcc_get_usart_clk_freq
-                0x08008630       0x1c ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x08008630                rcc_get_usart_clk_freq
+                0x080086ec       0x1c ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x080086ec                rcc_get_usart_clk_freq
  .text.rcc_periph_clock_enable
-                0x0800864c       0x1a ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
-                0x0800864c                rcc_periph_clock_enable
+                0x08008708       0x1a ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
+                0x08008708                rcc_periph_clock_enable
  .text.usart_set_baudrate
-                0x08008666       0x16 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
-                0x08008666                usart_set_baudrate
+                0x08008722       0x16 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+                0x08008722                usart_set_baudrate
  .text.usart_set_databits
-                0x0800867c       0x12 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
-                0x0800867c                usart_set_databits
+                0x08008738       0x12 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+                0x08008738                usart_set_databits
  .text.usart_set_stopbits
-                0x0800868e        0xc ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
-                0x0800868e                usart_set_stopbits
+                0x0800874a        0xc ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+                0x0800874a                usart_set_stopbits
  .text.usart_set_parity
-                0x0800869a        0xc ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
-                0x0800869a                usart_set_parity
+                0x08008756        0xc ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+                0x08008756                usart_set_parity
  .text.usart_set_mode
-                0x080086a6        0xc ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
-                0x080086a6                usart_set_mode
+                0x08008762        0xc ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+                0x08008762                usart_set_mode
  .text.usart_set_flow_control
-                0x080086b2        0xc ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
-                0x080086b2                usart_set_flow_control
+                0x0800876e        0xc ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+                0x0800876e                usart_set_flow_control
  .text.usart_enable
-                0x080086be        0xa ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
-                0x080086be                usart_enable
+                0x0800877a        0xa ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+                0x0800877a                usart_enable
  .text.usart_send_blocking
-                0x080086c8       0x16 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
-                0x080086c8                usart_send_blocking
+                0x08008784       0x16 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+                0x08008784                usart_send_blocking
  .text.usart_enable_rx_interrupt
-                0x080086de        0xa ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
-                0x080086de                usart_enable_rx_interrupt
+                0x0800879a        0xa ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+                0x0800879a                usart_enable_rx_interrupt
  .text.usart_send
-                0x080086e8        0x8 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
-                0x080086e8                usart_send
+                0x080087a4        0x8 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
+                0x080087a4                usart_send
  .text.usart_recv
-                0x080086f0        0x8 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
-                0x080086f0                usart_recv
+                0x080087ac        0x8 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
+                0x080087ac                usart_recv
  .text.usart_wait_send_ready
-                0x080086f8        0x8 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
-                0x080086f8                usart_wait_send_ready
+                0x080087b4        0x8 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
+                0x080087b4                usart_wait_send_ready
  .text.usart_get_flag
-                0x08008700        0xc ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
-                0x08008700                usart_get_flag
+                0x080087bc        0xc ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
+                0x080087bc                usart_get_flag
  .text.blocking_handler
-                0x0800870c        0x2 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
-                0x0800870c                usart3_isr
-                0x0800870c                rtc_isr
-                0x0800870c                tim7_isr
-                0x0800870c                adc1_2_isr
-                0x0800870c                tim1_trg_com_isr
-                0x0800870c                usb_hp_can_tx_isr
-                0x0800870c                tim6_isr
-                0x0800870c                usb_wakeup_isr
-                0x0800870c                blocking_handler
-                0x0800870c                tim5_isr
-                0x0800870c                otg_fs_isr
-                0x0800870c                spi1_isr
-                0x0800870c                exti2_isr
-                0x0800870c                dma1_channel6_isr
-                0x0800870c                can_rx1_isr
-                0x0800870c                dma1_channel5_isr
-                0x0800870c                dma2_channel5_isr
-                0x0800870c                usage_fault_handler
-                0x0800870c                tim8_trg_com_isr
-                0x0800870c                can2_rx0_isr
-                0x0800870c                tim1_brk_isr
-                0x0800870c                can2_rx1_isr
-                0x0800870c                tim1_cc_isr
-                0x0800870c                sdio_isr
-                0x0800870c                eth_isr
-                0x0800870c                dma1_channel4_isr
-                0x0800870c                tim8_brk_isr
-                0x0800870c                dma2_channel4_5_isr
-                0x0800870c                pvd_isr
-                0x0800870c                rcc_isr
-                0x0800870c                flash_isr
-                0x0800870c                uart4_isr
-                0x0800870c                rtc_alarm_isr
-                0x0800870c                exti15_10_isr
-                0x0800870c                hard_fault_handler
-                0x0800870c                exti1_isr
-                0x0800870c                i2c1_ev_isr
-                0x0800870c                dma2_channel1_isr
-                0x0800870c                spi2_isr
-                0x0800870c                tim8_up_isr
-                0x0800870c                dma2_channel2_isr
-                0x0800870c                exti3_isr
-                0x0800870c                adc3_isr
-                0x0800870c                tim3_isr
-                0x0800870c                usart2_isr
-                0x0800870c                usb_lp_can_rx0_isr
-                0x0800870c                i2c2_er_isr
-                0x0800870c                i2c2_ev_isr
-                0x0800870c                uart5_isr
-                0x0800870c                fsmc_isr
-                0x0800870c                dma1_channel1_isr
-                0x0800870c                exti4_isr
-                0x0800870c                mem_manage_handler
-                0x0800870c                can2_tx_isr
-                0x0800870c                exti9_5_isr
-                0x0800870c                dma2_channel3_isr
-                0x0800870c                dma1_channel7_isr
-                0x0800870c                tim1_up_isr
-                0x0800870c                can2_sce_isr
-                0x0800870c                tim4_isr
-                0x0800870c                dma1_channel2_isr
-                0x0800870c                i2c1_er_isr
-                0x0800870c                can_sce_isr
-                0x0800870c                tim8_cc_isr
-                0x0800870c                tamper_isr
-                0x0800870c                eth_wkup_isr
-                0x0800870c                bus_fault_handler
-                0x0800870c                wwdg_isr
-                0x0800870c                dma1_channel3_isr
-                0x0800870c                spi3_isr
-                0x0800870c                tim2_isr
-                0x0800870c                exti0_isr
+                0x080087c8        0x2 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+                0x080087c8                usart3_isr
+                0x080087c8                rtc_isr
+                0x080087c8                tim7_isr
+                0x080087c8                adc1_2_isr
+                0x080087c8                tim1_trg_com_isr
+                0x080087c8                usb_hp_can_tx_isr
+                0x080087c8                tim6_isr
+                0x080087c8                usb_wakeup_isr
+                0x080087c8                blocking_handler
+                0x080087c8                tim5_isr
+                0x080087c8                otg_fs_isr
+                0x080087c8                spi1_isr
+                0x080087c8                exti2_isr
+                0x080087c8                dma1_channel6_isr
+                0x080087c8                can_rx1_isr
+                0x080087c8                dma1_channel5_isr
+                0x080087c8                dma2_channel5_isr
+                0x080087c8                usage_fault_handler
+                0x080087c8                tim8_trg_com_isr
+                0x080087c8                can2_rx0_isr
+                0x080087c8                tim1_brk_isr
+                0x080087c8                can2_rx1_isr
+                0x080087c8                tim1_cc_isr
+                0x080087c8                sdio_isr
+                0x080087c8                eth_isr
+                0x080087c8                dma1_channel4_isr
+                0x080087c8                tim8_brk_isr
+                0x080087c8                dma2_channel4_5_isr
+                0x080087c8                pvd_isr
+                0x080087c8                rcc_isr
+                0x080087c8                flash_isr
+                0x080087c8                uart4_isr
+                0x080087c8                rtc_alarm_isr
+                0x080087c8                exti15_10_isr
+                0x080087c8                hard_fault_handler
+                0x080087c8                exti1_isr
+                0x080087c8                i2c1_ev_isr
+                0x080087c8                dma2_channel1_isr
+                0x080087c8                spi2_isr
+                0x080087c8                tim8_up_isr
+                0x080087c8                dma2_channel2_isr
+                0x080087c8                exti3_isr
+                0x080087c8                adc3_isr
+                0x080087c8                tim3_isr
+                0x080087c8                usart2_isr
+                0x080087c8                usb_lp_can_rx0_isr
+                0x080087c8                i2c2_er_isr
+                0x080087c8                i2c2_ev_isr
+                0x080087c8                uart5_isr
+                0x080087c8                fsmc_isr
+                0x080087c8                dma1_channel1_isr
+                0x080087c8                exti4_isr
+                0x080087c8                mem_manage_handler
+                0x080087c8                can2_tx_isr
+                0x080087c8                exti9_5_isr
+                0x080087c8                dma2_channel3_isr
+                0x080087c8                dma1_channel7_isr
+                0x080087c8                tim1_up_isr
+                0x080087c8                can2_sce_isr
+                0x080087c8                tim4_isr
+                0x080087c8                dma1_channel2_isr
+                0x080087c8                i2c1_er_isr
+                0x080087c8                can_sce_isr
+                0x080087c8                tim8_cc_isr
+                0x080087c8                tamper_isr
+                0x080087c8                eth_wkup_isr
+                0x080087c8                bus_fault_handler
+                0x080087c8                wwdg_isr
+                0x080087c8                dma1_channel3_isr
+                0x080087c8                spi3_isr
+                0x080087c8                tim2_isr
+                0x080087c8                exti0_isr
  .text.null_handler
-                0x0800870e        0x2 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
-                0x0800870e                sv_call_handler
-                0x0800870e                pend_sv_handler
-                0x0800870e                debug_monitor_handler
-                0x0800870e                nmi_handler
-                0x0800870e                null_handler
+                0x080087ca        0x2 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+                0x080087ca                sv_call_handler
+                0x080087ca                pend_sv_handler
+                0x080087ca                debug_monitor_handler
+                0x080087ca                nmi_handler
+                0x080087ca                null_handler
  .text.reset_handler
-                0x08008710       0x94 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
-                0x08008710                reset_handler
+                0x080087cc       0x94 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+                0x080087cc                reset_handler
  .text.systick_set_reload
-                0x080087a4        0xc ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
-                0x080087a4                systick_set_reload
+                0x08008860        0xc ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+                0x08008860                systick_set_reload
  .text.systick_set_clocksource
-                0x080087b0       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
-                0x080087b0                systick_set_clocksource
+                0x0800886c       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+                0x0800886c                systick_set_clocksource
  .text.systick_interrupt_enable
-                0x080087c4        0xe ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
-                0x080087c4                systick_interrupt_enable
+                0x08008880        0xe ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+                0x08008880                systick_interrupt_enable
  .text.systick_counter_enable
-                0x080087d2        0xe ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
-                0x080087d2                systick_counter_enable
+                0x0800888e        0xe ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+                0x0800888e                systick_counter_enable
  .text.systick_clear
-                0x080087e0        0xa ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
-                0x080087e0                systick_clear
+                0x0800889c        0xa ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+                0x0800889c                systick_clear
  .text.nvic_enable_irq
-                0x080087ea       0x18 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
-                0x080087ea                nvic_enable_irq
- *fill*         0x08008802        0x2 
+                0x080088a6       0x18 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
+                0x080088a6                nvic_enable_irq
+ *fill*         0x080088be        0x2 
  .text.flash_set_ws
-                0x08008804       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
-                0x08008804                flash_set_ws
-                0x08008818                        . = ALIGN (0x4)
+                0x080088c0       0x14 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
+                0x080088c0                flash_set_ws
+                0x080088d4                        . = ALIGN (0x4)
  *(.rodata*)
  .rodata.rcc_hse_configs
-                0x08008818       0x8c ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x08008818                rcc_hse_configs
-                0x080088a4                        . = ALIGN (0x4)
+                0x080088d4       0x8c ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x080088d4                rcc_hse_configs
+                0x08008960                        . = ALIGN (0x4)
 
-.glue_7         0x080088a4        0x0
- .glue_7        0x080088a4        0x0 linker stubs
+.glue_7         0x08008960        0x0
+ .glue_7        0x08008960        0x0 linker stubs
 
-.glue_7t        0x080088a4        0x0
- .glue_7t       0x080088a4        0x0 linker stubs
+.glue_7t        0x08008960        0x0
+ .glue_7t       0x08008960        0x0 linker stubs
 
-.vfp11_veneer   0x080088a4        0x0
- .vfp11_veneer  0x080088a4        0x0 linker stubs
+.vfp11_veneer   0x08008960        0x0
+ .vfp11_veneer  0x08008960        0x0 linker stubs
 
-.v4_bx          0x080088a4        0x0
- .v4_bx         0x080088a4        0x0 linker stubs
+.v4_bx          0x08008960        0x0
+ .v4_bx         0x08008960        0x0 linker stubs
 
-.iplt           0x080088a4        0x0
- .iplt          0x080088a4        0x0 src/firmware.o
+.iplt           0x08008960        0x0
+ .iplt          0x08008960        0x0 src/firmware.o
 
-.rel.dyn        0x080088a4        0x0
- .rel.iplt      0x080088a4        0x0 src/firmware.o
+.rel.dyn        0x08008960        0x0
+ .rel.iplt      0x08008960        0x0 src/firmware.o
 
-.preinit_array  0x080088a4        0x0
-                0x080088a4                        . = ALIGN (0x4)
-                0x080088a4                        __preinit_array_start = .
+.preinit_array  0x08008960        0x0
+                0x08008960                        . = ALIGN (0x4)
+                0x08008960                        __preinit_array_start = .
  *(.preinit_array)
-                0x080088a4                        __preinit_array_end = .
+                0x08008960                        __preinit_array_end = .
 
-.init_array     0x080088a4        0x0
-                0x080088a4                        . = ALIGN (0x4)
-                0x080088a4                        __init_array_start = .
+.init_array     0x08008960        0x0
+                0x08008960                        . = ALIGN (0x4)
+                0x08008960                        __init_array_start = .
  *(SORT_BY_NAME(.init_array.*))
  *(.init_array)
-                0x080088a4                        __init_array_end = .
+                0x08008960                        __init_array_end = .
 
-.fini_array     0x080088a4        0x0
-                0x080088a4                        . = ALIGN (0x4)
-                0x080088a4                        __fini_array_start = .
+.fini_array     0x08008960        0x0
+                0x08008960                        . = ALIGN (0x4)
+                0x08008960                        __fini_array_start = .
  *(.fini_array)
  *(SORT_BY_NAME(.fini_array.*))
-                0x080088a4                        __fini_array_end = .
+                0x08008960                        __fini_array_end = .
 
 .ARM.extab
  *(.ARM.extab*)
 
-.ARM.exidx      0x080088a4        0x0
-                0x080088a4                        __exidx_start = .
+.ARM.exidx      0x08008960        0x0
+                0x08008960                        __exidx_start = .
  *(.ARM.exidx*)
-                0x080088a4                        __exidx_end = .
-                0x080088a4                        . = ALIGN (0x4)
-                0x080088a4                        _etext = .
+                0x08008960                        __exidx_end = .
+                0x08008960                        . = ALIGN (0x4)
+                0x08008960                        _etext = .
 
 .noinit
  *(.noinit*)
-                0x080088a4                        . = ALIGN (0x4)
+                0x08008960                        . = ALIGN (0x4)
 
-.data           0x20000000       0x38 load address 0x080088a4
+.data           0x20000000       0x28 load address 0x08008960
                 0x20000000                        _data = .
  *(.data*)
- .data.heartbeat_msg.0
-                0x20000000       0x11 src/firmware.o
- .data.startup_msg.1
-                0x20000011       0x1a src/firmware.o
- *fill*         0x2000002b        0x1 
+ .data.startup_msg.0
+                0x20000000       0x1a src/firmware.o
+ *fill*         0x2000001a        0x2 
  .data.rcc_ahb_frequency
-                0x2000002c        0x4 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x2000002c                rcc_ahb_frequency
+                0x2000001c        0x4 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x2000001c                rcc_ahb_frequency
  .data.rcc_apb2_frequency
-                0x20000030        0x4 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x20000030                rcc_apb2_frequency
+                0x20000020        0x4 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x20000020                rcc_apb2_frequency
  .data.rcc_apb1_frequency
-                0x20000034        0x4 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
-                0x20000034                rcc_apb1_frequency
+                0x20000024        0x4 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x20000024                rcc_apb1_frequency
  *(.ramtext*)
-                0x20000038                        . = ALIGN (0x4)
-                0x20000038                        _edata = .
-                0x080088a4                        _data_loadaddr = LOADADDR (.data)
+                0x20000028                        . = ALIGN (0x4)
+                0x20000028                        _edata = .
+                0x08008960                        _data_loadaddr = LOADADDR (.data)
 
-.igot.plt       0x20000038        0x0 load address 0x080088dc
- .igot.plt      0x20000038        0x0 src/firmware.o
+.igot.plt       0x20000028        0x0 load address 0x08008988
+ .igot.plt      0x20000028        0x0 src/firmware.o
 
-.bss            0x20000038        0x8 load address 0x080088dc
+.bss            0x20000028       0x54 load address 0x08008988
  *(.bss*)
- .bss.ms_ticks  0x20000038        0x4 ../shared/src/core/system.o
- .bss.data_available
-                0x2000003c        0x1 ../shared/src/core/uart.o
+ .bss.ms_ticks  0x20000028        0x4 ../shared/src/core/system.o
+ .bss.rb        0x2000002c       0x10 ../shared/src/core/uart.o
  .bss.data_buffer
-                0x2000003d        0x1 ../shared/src/core/uart.o
+                0x2000003c       0x40 ../shared/src/core/uart.o
  *(COMMON)
-                0x20000040                        . = ALIGN (0x4)
- *fill*         0x2000003e        0x2 
-                0x20000040                        _ebss = .
+                0x2000007c                        . = ALIGN (0x4)
+                0x2000007c                        _ebss = .
 
 /DISCARD/
  *(.eh_frame)
-                0x20000040                        . = ALIGN (0x4)
-                0x20000040                        end = .
+                0x2000007c                        . = ALIGN (0x4)
+                0x2000007c                        end = .
                 0x20010000                        PROVIDE (_stack = (ORIGIN (ram) + LENGTH (ram)))
 OUTPUT(firmware.elf elf32-littlearm)
 LOAD linker stubs
 
-.debug_info     0x00000000     0x3f46
- .debug_info    0x00000000      0x4cd src/firmware.o
- .debug_info    0x000004cd      0x326 ../shared/src/core/system.o
- .debug_info    0x000007f3      0x73e ../shared/src/core/uart.o
- .debug_info    0x00000f31      0x1fd ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
- .debug_info    0x0000112e      0x256 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
- .debug_info    0x00001384     0x14d0 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
- .debug_info    0x00002854      0x60d ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
- .debug_info    0x00002e61      0x6d1 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
- .debug_info    0x00003532      0x192 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
- .debug_info    0x000036c4      0x2c4 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
- .debug_info    0x00003988      0x28f ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
- .debug_info    0x00003c17      0x239 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
- .debug_info    0x00003e50       0xf6 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
+.debug_info     0x00000000     0x4302
+ .debug_info    0x00000000      0x483 src/firmware.o
+ .debug_info    0x00000483      0x326 ../shared/src/core/system.o
+ .debug_info    0x000007a9      0x8fa ../shared/src/core/uart.o
+ .debug_info    0x000010a3      0x24a ../shared/src/core/ring-buffer.o
+ .debug_info    0x000012ed      0x1fd ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
+ .debug_info    0x000014ea      0x256 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
+ .debug_info    0x00001740     0x14d0 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+ .debug_info    0x00002c10      0x60d ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
+ .debug_info    0x0000321d      0x6d1 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+ .debug_info    0x000038ee      0x192 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
+ .debug_info    0x00003a80      0x2c4 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+ .debug_info    0x00003d44      0x28f ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+ .debug_info    0x00003fd3      0x239 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
+ .debug_info    0x0000420c       0xf6 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
 
-.debug_abbrev   0x00000000     0x11b5
- .debug_abbrev  0x00000000      0x19f src/firmware.o
- .debug_abbrev  0x0000019f      0x1cb ../shared/src/core/system.o
- .debug_abbrev  0x0000036a      0x1c1 ../shared/src/core/uart.o
- .debug_abbrev  0x0000052b       0xd3 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
- .debug_abbrev  0x000005fe      0x115 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
- .debug_abbrev  0x00000713      0x2be ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
- .debug_abbrev  0x000009d1      0x185 ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
- .debug_abbrev  0x00000b56      0x1bf ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
- .debug_abbrev  0x00000d15       0xb6 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
- .debug_abbrev  0x00000dcb      0x149 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
- .debug_abbrev  0x00000f14      0x14e ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
- .debug_abbrev  0x00001062       0xb6 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
- .debug_abbrev  0x00001118       0x9d ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
+.debug_abbrev   0x00000000     0x134a
+ .debug_abbrev  0x00000000      0x1a7 src/firmware.o
+ .debug_abbrev  0x000001a7      0x1cb ../shared/src/core/system.o
+ .debug_abbrev  0x00000372      0x254 ../shared/src/core/uart.o
+ .debug_abbrev  0x000005c6       0xfa ../shared/src/core/ring-buffer.o
+ .debug_abbrev  0x000006c0       0xd3 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
+ .debug_abbrev  0x00000793      0x115 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
+ .debug_abbrev  0x000008a8      0x2be ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+ .debug_abbrev  0x00000b66      0x185 ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
+ .debug_abbrev  0x00000ceb      0x1bf ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+ .debug_abbrev  0x00000eaa       0xb6 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
+ .debug_abbrev  0x00000f60      0x149 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+ .debug_abbrev  0x000010a9      0x14e ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+ .debug_abbrev  0x000011f7       0xb6 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
+ .debug_abbrev  0x000012ad       0x9d ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
 
 .debug_loclists
-                0x00000000      0xc02
+                0x00000000      0xd76
  .debug_loclists
-                0x00000000       0x4a src/firmware.o
+                0x00000000       0x41 src/firmware.o
  .debug_loclists
-                0x0000004a      0x118 ../shared/src/core/uart.o
+                0x00000041      0x14a ../shared/src/core/uart.o
  .debug_loclists
-                0x00000162      0x107 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
+                0x0000018b      0x14b ../shared/src/core/ring-buffer.o
  .debug_loclists
-                0x00000269       0x96 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
+                0x000002d6      0x107 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
  .debug_loclists
-                0x000002ff      0x2cb ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x000003dd       0x96 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
  .debug_loclists
-                0x000005ca       0x97 ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
+                0x00000473      0x2cb ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
  .debug_loclists
-                0x00000661      0x1b8 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+                0x0000073e       0x97 ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
  .debug_loclists
-                0x00000819       0x79 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
+                0x000007d5      0x1b8 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
  .debug_loclists
-                0x00000892       0xa8 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+                0x0000098d       0x79 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
  .debug_loclists
-                0x0000093a      0x192 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+                0x00000a06       0xa8 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
  .debug_loclists
-                0x00000acc      0x111 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
+                0x00000aae      0x192 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
  .debug_loclists
-                0x00000bdd       0x25 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
+                0x00000c40      0x111 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
+ .debug_loclists
+                0x00000d51       0x25 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
 
-.debug_aranges  0x00000000      0x590
+.debug_aranges  0x00000000      0x5c8
  .debug_aranges
                 0x00000000       0x20 src/firmware.o
  .debug_aranges
@@ -1073,56 +1108,60 @@ LOAD linker stubs
  .debug_aranges
                 0x00000050       0x50 ../shared/src/core/uart.o
  .debug_aranges
-                0x000000a0       0x38 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
+                0x000000a0       0x38 ../shared/src/core/ring-buffer.o
  .debug_aranges
-                0x000000d8       0x50 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
+                0x000000d8       0x38 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
  .debug_aranges
-                0x00000128      0x170 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x00000110       0x50 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
  .debug_aranges
-                0x00000298       0x80 ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
+                0x00000160      0x170 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
  .debug_aranges
-                0x00000318       0xf8 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+                0x000002d0       0x80 ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
  .debug_aranges
-                0x00000410       0x40 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
+                0x00000350       0xf8 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
  .debug_aranges
-                0x00000450       0x30 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+                0x00000448       0x40 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
  .debug_aranges
-                0x00000480       0x78 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+                0x00000488       0x30 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
  .debug_aranges
-                0x000004f8       0x60 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
+                0x000004b8       0x78 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
  .debug_aranges
-                0x00000558       0x38 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
+                0x00000530       0x60 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
+ .debug_aranges
+                0x00000590       0x38 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
 
 .debug_rnglists
-                0x00000000      0x471
+                0x00000000      0x4ba
  .debug_rnglists
-                0x00000000       0x22 src/firmware.o
+                0x00000000       0x2e src/firmware.o
  .debug_rnglists
-                0x00000022       0x37 ../shared/src/core/system.o
+                0x0000002e       0x37 ../shared/src/core/system.o
  .debug_rnglists
-                0x00000059       0x38 ../shared/src/core/uart.o
+                0x00000065       0x50 ../shared/src/core/uart.o
  .debug_rnglists
-                0x00000091       0x25 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
+                0x000000b5       0x25 ../shared/src/core/ring-buffer.o
  .debug_rnglists
-                0x000000b6       0x37 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
+                0x000000da       0x25 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
  .debug_rnglists
-                0x000000ed      0x160 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x000000ff       0x37 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
  .debug_rnglists
-                0x0000024d       0x5b ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
+                0x00000136      0x160 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
  .debug_rnglists
-                0x000002a8       0xb5 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+                0x00000296       0x5b ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
  .debug_rnglists
-                0x0000035d       0x2b ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
+                0x000002f1       0xb5 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
  .debug_rnglists
-                0x00000388       0x20 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+                0x000003a6       0x2b ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
  .debug_rnglists
-                0x000003a8       0x61 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+                0x000003d1       0x20 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
  .debug_rnglists
-                0x00000409       0x43 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
+                0x000003f1       0x61 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
  .debug_rnglists
-                0x0000044c       0x25 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
+                0x00000452       0x43 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
+ .debug_rnglists
+                0x00000495       0x25 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
 
-.debug_macro    0x00000000     0x4558
+.debug_macro    0x00000000     0x45f1
  .debug_macro   0x00000000      0x115 src/firmware.o
  .debug_macro   0x00000115      0xad2 src/firmware.o
  .debug_macro   0x00000be7       0x1c src/firmware.o
@@ -1142,70 +1181,74 @@ LOAD linker stubs
  .debug_macro   0x00002ac3      0x3a9 src/firmware.o
  .debug_macro   0x00002e6c       0xd7 ../shared/src/core/system.o
  .debug_macro   0x00002f43       0x6f ../shared/src/core/system.o
- .debug_macro   0x00002fb2      0x134 ../shared/src/core/uart.o
- .debug_macro   0x000030e6       0x94 ../shared/src/core/uart.o
- .debug_macro   0x0000317a      0x29e ../shared/src/core/uart.o
- .debug_macro   0x00003418       0x6e ../shared/src/core/uart.o
- .debug_macro   0x00003486      0x1a2 ../shared/src/core/uart.o
- .debug_macro   0x00003628      0x189 ../shared/src/core/uart.o
- .debug_macro   0x000037b1       0xb8 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
- .debug_macro   0x00003869       0xb8 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
- .debug_macro   0x00003921       0xe7 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
- .debug_macro   0x00003a08       0x16 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
- .debug_macro   0x00003a1e       0xee ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
- .debug_macro   0x00003b0c       0x82 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
- .debug_macro   0x00003b8e       0xce ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
- .debug_macro   0x00003c5c       0xda ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
- .debug_macro   0x00003d36       0xda ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
- .debug_macro   0x00003e10       0xcf ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
- .debug_macro   0x00003edf      0x3a3 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
- .debug_macro   0x00004282       0x92 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
- .debug_macro   0x00004314       0x69 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
- .debug_macro   0x0000437d       0xb3 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
- .debug_macro   0x00004430       0x68 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
- .debug_macro   0x00004498       0xc0 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
+ .debug_macro   0x00002fb2      0x144 ../shared/src/core/uart.o
+ .debug_macro   0x000030f6       0x94 ../shared/src/core/uart.o
+ .debug_macro   0x0000318a      0x29e ../shared/src/core/uart.o
+ .debug_macro   0x00003428       0x6e ../shared/src/core/uart.o
+ .debug_macro   0x00003496      0x1a2 ../shared/src/core/uart.o
+ .debug_macro   0x00003638      0x189 ../shared/src/core/uart.o
+ .debug_macro   0x000037c1       0x89 ../shared/src/core/ring-buffer.o
+ .debug_macro   0x0000384a       0xb8 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
+ .debug_macro   0x00003902       0xb8 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
+ .debug_macro   0x000039ba       0xe7 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+ .debug_macro   0x00003aa1       0x16 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+ .debug_macro   0x00003ab7       0xee ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+ .debug_macro   0x00003ba5       0x82 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+ .debug_macro   0x00003c27       0xce ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
+ .debug_macro   0x00003cf5       0xda ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+ .debug_macro   0x00003dcf       0xda ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
+ .debug_macro   0x00003ea9       0xcf ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+ .debug_macro   0x00003f78      0x3a3 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+ .debug_macro   0x0000431b       0x92 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+ .debug_macro   0x000043ad       0x69 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+ .debug_macro   0x00004416       0xb3 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
+ .debug_macro   0x000044c9       0x68 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
+ .debug_macro   0x00004531       0xc0 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
 
-.debug_line     0x00000000     0x37d6
- .debug_line    0x00000000      0x32e src/firmware.o
- .debug_line    0x0000032e      0x2eb ../shared/src/core/system.o
- .debug_line    0x00000619      0x49d ../shared/src/core/uart.o
- .debug_line    0x00000ab6      0x374 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
- .debug_line    0x00000e2a      0x32d ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
- .debug_line    0x00001157      0xcdf ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
- .debug_line    0x00001e36      0x3d1 ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
- .debug_line    0x00002207      0x626 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
- .debug_line    0x0000282d      0x314 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
- .debug_line    0x00002b41      0x348 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
- .debug_line    0x00002e89      0x325 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
- .debug_line    0x000031ae      0x355 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
- .debug_line    0x00003503      0x2d3 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
+.debug_line     0x00000000     0x3af5
+ .debug_line    0x00000000      0x323 src/firmware.o
+ .debug_line    0x00000323      0x2eb ../shared/src/core/system.o
+ .debug_line    0x0000060e      0x4cf ../shared/src/core/uart.o
+ .debug_line    0x00000add      0x2f8 ../shared/src/core/ring-buffer.o
+ .debug_line    0x00000dd5      0x374 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
+ .debug_line    0x00001149      0x32d ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
+ .debug_line    0x00001476      0xcdf ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+ .debug_line    0x00002155      0x3d1 ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
+ .debug_line    0x00002526      0x626 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+ .debug_line    0x00002b4c      0x314 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
+ .debug_line    0x00002e60      0x348 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+ .debug_line    0x000031a8      0x325 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+ .debug_line    0x000034cd      0x355 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
+ .debug_line    0x00003822      0x2d3 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
 
-.debug_str      0x00000000    0x10271
- .debug_str     0x00000000    0x10271 src/firmware.o
-                               0xc314 (size before relaxing)
- .debug_str     0x00010271        0x0 ../shared/src/core/system.o
+.debug_str      0x00000000    0x10340
+ .debug_str     0x00000000    0x10340 src/firmware.o
+                               0xc306 (size before relaxing)
+ .debug_str     0x00010340        0x0 ../shared/src/core/system.o
                                0x7a11 (size before relaxing)
- .debug_str     0x00010271        0x0 ../shared/src/core/uart.o
-                               0xcce1 (size before relaxing)
- .debug_str     0x00010271        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
+ .debug_str     0x00010340        0x0 ../shared/src/core/uart.o
+                               0xcd78 (size before relaxing)
+ .debug_str     0x00010340        0x0 ../shared/src/core/ring-buffer.o
+                               0x41af (size before relaxing)
+ .debug_str     0x00010340        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
                                0x87e5 (size before relaxing)
- .debug_str     0x00010271        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
+ .debug_str     0x00010340        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
                                0x87d9 (size before relaxing)
- .debug_str     0x00010271        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+ .debug_str     0x00010340        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
                                0x843a (size before relaxing)
- .debug_str     0x00010271        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
+ .debug_str     0x00010340        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
                                0x7b48 (size before relaxing)
- .debug_str     0x00010271        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+ .debug_str     0x00010340        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
                                0x87ac (size before relaxing)
- .debug_str     0x00010271        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
+ .debug_str     0x00010340        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
                                0x84fd (size before relaxing)
- .debug_str     0x00010271        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+ .debug_str     0x00010340        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
                                0x687e (size before relaxing)
- .debug_str     0x00010271        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+ .debug_str     0x00010340        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
                                0x470f (size before relaxing)
- .debug_str     0x00010271        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
+ .debug_str     0x00010340        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
                                0x5e60 (size before relaxing)
- .debug_str     0x00010271        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
+ .debug_str     0x00010340        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
                                0x571e (size before relaxing)
 
 .comment        0x00000000       0x46
@@ -1214,6 +1257,8 @@ LOAD linker stubs
  .comment       0x00000046        0x0 ../shared/src/core/system.o
                                  0x47 (size before relaxing)
  .comment       0x00000046        0x0 ../shared/src/core/uart.o
+                                 0x47 (size before relaxing)
+ .comment       0x00000046        0x0 ../shared/src/core/ring-buffer.o
                                  0x47 (size before relaxing)
  .comment       0x00000046        0x0 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
                                  0x47 (size before relaxing)
@@ -1245,40 +1290,43 @@ LOAD linker stubs
  .ARM.attributes
                 0x0000005a       0x2d ../shared/src/core/uart.o
  .ARM.attributes
-                0x00000087       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
+                0x00000087       0x2d ../shared/src/core/ring-buffer.o
  .ARM.attributes
-                0x000000b4       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
+                0x000000b4       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
  .ARM.attributes
-                0x000000e1       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+                0x000000e1       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
  .ARM.attributes
-                0x0000010e       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
+                0x0000010e       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
  .ARM.attributes
-                0x0000013b       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+                0x0000013b       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
  .ARM.attributes
-                0x00000168       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
+                0x00000168       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
  .ARM.attributes
-                0x00000195       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+                0x00000195       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
  .ARM.attributes
-                0x000001c2       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+                0x000001c2       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
  .ARM.attributes
-                0x000001ef       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
+                0x000001ef       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
  .ARM.attributes
-                0x0000021c       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
+                0x0000021c       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
+ .ARM.attributes
+                0x00000249       0x2d ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
 
-.debug_frame    0x00000000      0xa6c
+.debug_frame    0x00000000      0xaf8
  .debug_frame   0x00000000       0x2c src/firmware.o
  .debug_frame   0x0000002c       0x4c ../shared/src/core/system.o
- .debug_frame   0x00000078       0xa0 ../shared/src/core/uart.o
- .debug_frame   0x00000118       0x64 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
- .debug_frame   0x0000017c       0x80 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
- .debug_frame   0x000001fc      0x318 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
- .debug_frame   0x00000514       0xe0 ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
- .debug_frame   0x000005f4      0x204 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
- .debug_frame   0x000007f8       0x60 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
- .debug_frame   0x00000858       0x4c ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
- .debug_frame   0x000008a4       0xd8 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
- .debug_frame   0x0000097c       0xa0 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
- .debug_frame   0x00000a1c       0x50 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
+ .debug_frame   0x00000078       0xc8 ../shared/src/core/uart.o
+ .debug_frame   0x00000140       0x64 ../shared/src/core/ring-buffer.o
+ .debug_frame   0x000001a4       0x64 ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
+ .debug_frame   0x00000208       0x80 ../libopencm3/lib\libopencm3_stm32f1.a(gpio_common_all.o)
+ .debug_frame   0x00000288      0x318 ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
+ .debug_frame   0x000005a0       0xe0 ../libopencm3/lib\libopencm3_stm32f1.a(rcc_common_all.o)
+ .debug_frame   0x00000680      0x204 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_all.o)
+ .debug_frame   0x00000884       0x60 ../libopencm3/lib\libopencm3_stm32f1.a(usart_common_f124.o)
+ .debug_frame   0x000008e4       0x4c ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+ .debug_frame   0x00000930       0xd8 ../libopencm3/lib\libopencm3_stm32f1.a(systick.o)
+ .debug_frame   0x00000a08       0xa0 ../libopencm3/lib\libopencm3_stm32f1.a(nvic.o)
+ .debug_frame   0x00000aa8       0x50 ../libopencm3/lib\libopencm3_stm32f1.a(flash_common_all.o)
 
 Cross Reference Table
 
@@ -1441,6 +1489,14 @@ rcc_set_usbpre                                    ../libopencm3/lib\libopencm3_s
 rcc_system_clock_source                           ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
 rcc_wait_for_osc_ready                            ../libopencm3/lib\libopencm3_stm32f1.a(rcc.o)
 reset_handler                                     ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+ring_buffer_empty                                 ../shared/src/core/ring-buffer.o
+                                                  ../shared/src/core/uart.o
+ring_buffer_read                                  ../shared/src/core/ring-buffer.o
+                                                  ../shared/src/core/uart.o
+ring_buffer_setup                                 ../shared/src/core/ring-buffer.o
+                                                  ../shared/src/core/uart.o
+ring_buffer_write                                 ../shared/src/core/ring-buffer.o
+                                                  ../shared/src/core/uart.o
 rtc_alarm_isr                                     ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
 rtc_isr                                           ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
 sdio_isr                                          ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)

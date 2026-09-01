@@ -49,6 +49,7 @@ OBJCOPY		:= $(PREFIX)objcopy
 OBJDUMP		:= $(PREFIX)objdump
 GDB		:= $(PREFIX)gdb
 STFLASH		?= st-flash
+POWERSHELL	?= powershell
 OPT		:= -Os
 DEBUG		:= -ggdb3
 CSTD		?= -std=c99
@@ -148,7 +149,7 @@ print-%:
 %.bin: %.elf
 	@#printf "  OBJCOPY $(*).bin\n"
 	$(Q)$(OBJCOPY) -Obinary $(*).elf $(*).bin
-	python pad-bootloader.py
+	$(Q)$(POWERSHELL) -NoProfile -ExecutionPolicy Bypass -File pad-bootloader.ps1
 
 %.hex: %.elf
 	@#printf "  OBJCOPY $(*).hex\n"

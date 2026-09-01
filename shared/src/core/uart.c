@@ -8,12 +8,13 @@
 #include "core/ring-buffer.h"
 #define RING_BUFFER_SIZE (64)
 static volatile uint8_t data_buffer[RING_BUFFER_SIZE] = {0U};
-static volatile bool data_available = false;
 
 static ring_buffer_t rb = {0U};
 void uart_setup(void)
 {
-	ring_buffer_setup(&rb,data_buffer,RING_BUFFER_SIZE);
+	if (!ring_buffer_setup(&rb, data_buffer, RING_BUFFER_SIZE)) {
+		return;
+	}
 	rcc_periph_clock_enable(RCC_GPIOA);
 	rcc_periph_clock_enable(RCC_USART1);
 
@@ -66,7 +67,9 @@ void uart_write_byte(uint8_t data)
 
 uint32_t uart_read(uint8_t *data, const uint32_t length)
 {
-	if ( length==0 ) return 0;
+	if ((data == NULL) || (length == 0U)) {
+		return 0U;
+	}
 	for(uint32_t i =0 ;i<length;i++){
 		if(!ring_buffer_read(&rb, &data[i])){
         return i;

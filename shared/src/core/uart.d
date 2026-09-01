@@ -25,4 +25,5 @@
  ../libopencm3/include/libopencm3/dispatch/nvic.h \
  ../libopencm3/include/libopencm3/stm32/f1/nvic.h \
  D:/lib/gcc/arm-none-eabi/15.3.1/include/stddef.h \
- ../shared/inc/core/uart.h inc/common-defines.h
+ ../shared/inc/core/uart.h inc/common-defines.h \
+ ../shared/inc/core/ring-buffer.h
