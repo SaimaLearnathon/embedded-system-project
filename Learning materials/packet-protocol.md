@@ -88,10 +88,7 @@ A **state machine** means the system is always in one specific "mode," and speci
    └────────────────────────┘
 ```
 
-> **[Insert screenshot here]**
-> `![Packet state machine from the video](./images/state-1.png)`
->
-> Drop your screenshot into an `images/` folder next to this file (or update the path) and this line will render it in VS Code's Markdown preview.
+![Packet state machine from the video](./images/state-1.png)
 
 ### Walking through each state
 
@@ -128,9 +125,8 @@ The packet system above is a general-purpose reliable communication tool. The bo
  │ with PC  │     │ + size    │     │ using the protocol    │     │ signature first)   │
  └────────┘     └──────────┘     └────────────────────┘     └──────────────────┘
 ```
-```
-> **[Insert screenshot here]**
-> `![Packet state machine from the video](./images/state-2.png)`
+
+![Bootloader integration flow from the video](./images/state-2.png)
 
 
 ### Walking through the bootloader steps
