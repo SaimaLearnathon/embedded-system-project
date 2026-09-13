@@ -26,6 +26,29 @@
       "configFiles": ["interface/stlink.cfg", "target/stm32f1x.cfg"]
     },
     {
+      "name": "Node: Debug fw-updater",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/fw-updater",
+      "program": "${workspaceFolder}/fw-updater/dist/index.js",
+      "args": ["placeholder", "COM8"],
+      "outFiles": ["${workspaceFolder}/fw-updater/dist/**/*.js"],
+      "preLaunchTask": "build_fw_updater",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "ST-Link: Debug Bootloader",
+      "cwd": "${workspaceFolder}/bootloader",
+      "executable": "./bootloader.elf",
+      "servertype": "stutil",
+      "serverpath": "F:\\stlink-1.8.0-win32\\stlink-1.8.0-win32\\bin\\st-util.exe",
+      "request": "launch",
+      "type": "cortex-debug",
+      "device": "STM32F103C8",
+      "runToEntryPoint": "main",
+      "preLaunchTask": "build_debug_bootloader"
+    },
+    {
       "name": "ST-Link: Debug Application",
       "cwd": "${workspaceFolder}/app",
       "executable": "./firmware.elf",

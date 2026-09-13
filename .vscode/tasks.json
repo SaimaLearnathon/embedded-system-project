@@ -26,6 +26,24 @@
     },
     {
       "type": "shell",
+      "label": "build_debug_bootloader",
+      "options": {
+        "cwd": "bootloader"
+      },
+      "command": "make bin",
+      "problemMatcher": "$gcc"
+    },
+    {
+      "type": "shell",
+      "label": "build_fw_updater",
+      "options": {
+        "cwd": "fw-updater"
+      },
+      "command": "npm run build",
+      "problemMatcher": "$tsc"
+    },
+    {
+      "type": "shell",
       "label": "flash_stlink",
       "options": {
         "cwd": "app"

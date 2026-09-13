@@ -11,4 +11,7 @@ void system_setup(void);
 /* Number of SysTick milliseconds elapsed since boot. */
 uint32_t system_get_ticks(void);
 
+/* Busy-wait for the given number of milliseconds. */
+void system_delay(uint32_t milliseconds);
+
 #endif /* INC_CORE_SYSTEM_H */

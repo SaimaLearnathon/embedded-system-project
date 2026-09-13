@@ -41,3 +41,11 @@ uint32_t system_get_ticks(void)
 {
 	return ms_ticks;
 }
+
+void system_delay(uint32_t milliseconds)
+{
+	uint32_t start = ms_ticks;
+	while ((ms_ticks - start) < milliseconds) {
+		/* busy-wait */
+	}
+}
