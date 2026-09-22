@@ -41,6 +41,18 @@ static bool comms_is_single_byte_packet(const comms_packet_t *packet, uint8_t by
     return true;
 }
 
+static void comms_write_with_crc(comms_packet_t *packet, uint8_t crc)
+{
+    uint8_t bytes[PACKET_LENGTH];
+
+    bytes[0] = packet->length;
+    for (uint8_t i = 0; i < PACKET_DATA_LENGTH; i++) {
+        bytes[i + 1U] = packet->data[i];
+    }
+    bytes[PACKET_CRC_LENGTH] = crc;
+    uart_write(bytes, PACKET_LENGTH);
+}
+
 void comms_setup(void)
 {
     state = CommsState_length;
@@ -144,14 +156,17 @@ void comms_write(comms_packet_t *packet)
         last_transmitted_packet_valid = true;
     }
 
-    /* Serialize explicitly so the wire format does not depend on struct padding. */
-    uint8_t bytes[PACKET_LENGTH];
-    bytes[0] = packet->length;
-    for (uint8_t i = 0; i < PACKET_DATA_LENGTH; i++) {
-        bytes[i + 1U] = packet->data[i];
+    comms_write_with_crc(packet, packet->crc);
+}
+
+void comms_write_corrupt_crc(comms_packet_t *packet)
+{
+    if (packet == NULL || packet->length > PACKET_DATA_LENGTH) {
+        return;
     }
-    bytes[PACKET_CRC_LENGTH] = packet->crc;
-    uart_write(bytes, PACKET_LENGTH);
+
+    packet->crc = comms_compute_crc(packet);
+    comms_write_with_crc(packet, (uint8_t)(packet->crc + 1U));
 }
 
 void comms_read(comms_packet_t *packet)

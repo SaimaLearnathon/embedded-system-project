@@ -135,6 +135,48 @@ Discarded input sections
  .debug_macro   0x00000000      0x1d0 ../shared/src/core/ring-buffer.o
  .debug_macro   0x00000000       0x22 ../shared/src/core/ring-buffer.o
  .debug_macro   0x00000000      0x189 ../shared/src/core/ring-buffer.o
+ .group         0x00000000        0xc ../shared/src/core/simple-timer.o
+ .group         0x00000000        0xc ../shared/src/core/simple-timer.o
+ .group         0x00000000        0xc ../shared/src/core/simple-timer.o
+ .group         0x00000000        0xc ../shared/src/core/simple-timer.o
+ .group         0x00000000        0xc ../shared/src/core/simple-timer.o
+ .group         0x00000000        0xc ../shared/src/core/simple-timer.o
+ .group         0x00000000        0xc ../shared/src/core/simple-timer.o
+ .group         0x00000000        0xc ../shared/src/core/simple-timer.o
+ .group         0x00000000        0xc ../shared/src/core/simple-timer.o
+ .text          0x00000000        0x0 ../shared/src/core/simple-timer.o
+ .data          0x00000000        0x0 ../shared/src/core/simple-timer.o
+ .bss           0x00000000        0x0 ../shared/src/core/simple-timer.o
+ .text.simple_timer_setup
+                0x00000000       0x26 ../shared/src/core/simple-timer.o
+ .text.simple_timer_has_elapsed
+                0x00000000       0x3a ../shared/src/core/simple-timer.o
+ .text.simple_timer_reset
+                0x00000000       0x12 ../shared/src/core/simple-timer.o
+ .debug_info    0x00000000      0x20f ../shared/src/core/simple-timer.o
+ .debug_abbrev  0x00000000      0x150 ../shared/src/core/simple-timer.o
+ .debug_loclists
+                0x00000000       0xbb ../shared/src/core/simple-timer.o
+ .debug_aranges
+                0x00000000       0x30 ../shared/src/core/simple-timer.o
+ .debug_rnglists
+                0x00000000       0x1f ../shared/src/core/simple-timer.o
+ .debug_macro   0x00000000       0x89 ../shared/src/core/simple-timer.o
+ .debug_macro   0x00000000      0xad2 ../shared/src/core/simple-timer.o
+ .debug_macro   0x00000000       0x22 ../shared/src/core/simple-timer.o
+ .debug_macro   0x00000000       0x56 ../shared/src/core/simple-timer.o
+ .debug_macro   0x00000000       0x6d ../shared/src/core/simple-timer.o
+ .debug_macro   0x00000000      0x103 ../shared/src/core/simple-timer.o
+ .debug_macro   0x00000000       0x6a ../shared/src/core/simple-timer.o
+ .debug_macro   0x00000000      0x1d0 ../shared/src/core/simple-timer.o
+ .debug_macro   0x00000000       0x22 ../shared/src/core/simple-timer.o
+ .debug_macro   0x00000000       0x10 ../shared/src/core/simple-timer.o
+ .debug_line    0x00000000      0x24c ../shared/src/core/simple-timer.o
+ .debug_str     0x00000000     0x3e80 ../shared/src/core/simple-timer.o
+ .comment       0x00000000       0x47 ../shared/src/core/simple-timer.o
+ .debug_frame   0x00000000       0x5c ../shared/src/core/simple-timer.o
+ .ARM.attributes
+                0x00000000       0x2d ../shared/src/core/simple-timer.o
  .group         0x00000000        0xc ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
  .group         0x00000000        0xc ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
  .group         0x00000000        0xc ../libopencm3/lib\libopencm3_stm32f1.a(gpio.o)
@@ -667,6 +709,7 @@ LOAD src/firmware.o
 LOAD ../shared/src/core/system.o
 LOAD ../shared/src/core/uart.o
 LOAD ../shared/src/core/ring-buffer.o
+LOAD ../shared/src/core/simple-timer.o
 LOAD ../libopencm3/lib\libopencm3_stm32f1.a
 START GROUP
 LOAD D:/bin/../lib/gcc/arm-none-eabi/15.3.1/../../../../arm-none-eabi/lib/thumb/v7-m/nofp\libc.a
@@ -1504,6 +1547,9 @@ ring_buffer_write                                 ../shared/src/core/ring-buffer
 rtc_alarm_isr                                     ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
 rtc_isr                                           ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
 sdio_isr                                          ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
+simple_timer_has_elapsed                          ../shared/src/core/simple-timer.o
+simple_timer_reset                                ../shared/src/core/simple-timer.o
+simple_timer_setup                                ../shared/src/core/simple-timer.o
 spi1_isr                                          ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
 spi2_isr                                          ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
 spi3_isr                                          ../libopencm3/lib\libopencm3_stm32f1.a(vector.o)
@@ -1511,6 +1557,7 @@ sv_call_handler                                   ../libopencm3/lib\libopencm3_s
 sys_tick_handler                                  ../shared/src/core/system.o
 system_delay                                      ../shared/src/core/system.o
 system_get_ticks                                  ../shared/src/core/system.o
+                                                  ../shared/src/core/simple-timer.o
                                                   src/firmware.o
 system_setup                                      ../shared/src/core/system.o
                                                   src/firmware.o

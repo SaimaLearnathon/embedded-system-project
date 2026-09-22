@@ -10,6 +10,7 @@
       "device": "STM32F103C8",
       "runToEntryPoint": "main",
       "interface": "swd",
+      "openOCDPreConfigLaunchCommands": ["set CPUTAPID 0x2ba01477"],
       "configFiles": ["interface/stlink.cfg", "target/stm32f1x.cfg"],
       "preLaunchTask": "build_debug"
     },
@@ -23,6 +24,7 @@
       "device": "STM32F103C8",
       "runToEntryPoint": "main",
       "interface": "swd",
+      "openOCDPreConfigLaunchCommands": ["set CPUTAPID 0x2ba01477"],
       "configFiles": ["interface/stlink.cfg", "target/stm32f1x.cfg"]
     },
     {
@@ -40,12 +42,14 @@
       "name": "ST-Link: Debug Bootloader",
       "cwd": "${workspaceFolder}/bootloader",
       "executable": "./bootloader.elf",
-      "servertype": "stutil",
-      "serverpath": "F:\\stlink-1.8.0-win32\\stlink-1.8.0-win32\\bin\\st-util.exe",
+      "servertype": "openocd",
       "request": "launch",
       "type": "cortex-debug",
       "device": "STM32F103C8",
       "runToEntryPoint": "main",
+      "interface": "swd",
+      "openOCDPreConfigLaunchCommands": ["set CPUTAPID 0x2ba01477"],
+      "configFiles": ["interface/stlink.cfg", "target/stm32f1x.cfg"],
       "preLaunchTask": "build_debug_bootloader"
     },
     {
@@ -58,6 +62,7 @@
       "device": "STM32F103C8",
       "runToEntryPoint": "main",
       "interface": "swd",
+      "openOCDPreConfigLaunchCommands": ["set CPUTAPID 0x2ba01477"],
       "configFiles": ["interface/stlink.cfg", "target/stm32f1x.cfg"],
       "preLaunchTask": "build_debug"
     },
@@ -71,6 +76,7 @@
       "device": "STM32F103C8",
       "runToEntryPoint": "main",
       "interface": "swd",
+      "openOCDPreConfigLaunchCommands": ["set CPUTAPID 0x2ba01477"],
       "configFiles": ["interface/stlink.cfg", "target/stm32f1x.cfg"]
     }
    ]
