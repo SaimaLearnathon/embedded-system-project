@@ -1,3 +1,4 @@
+#include <string.h>
 #include "comms.h"
 #include "core/uart.h"
 #include "core/crc8.h"
@@ -27,7 +28,7 @@ static comms_packet_t packet_buffer[PACKET_BUFFER_LENGTH];
 static uint32_t packet_read_index = 0;
 static uint32_t packet_write_index = 0;
 
-static bool comms_is_single_byte_packet(const comms_packet_t *packet, uint8_t byte)
+bool comms_is_single_byte_packet(const comms_packet_t *packet, uint8_t byte)
 {
     if (packet->length != 1 || packet->data[0] != byte) {
         return false;
@@ -39,6 +40,20 @@ static bool comms_is_single_byte_packet(const comms_packet_t *packet, uint8_t by
         }
     }
     return true;
+}
+
+void comms_create_single_byte_packet(comms_packet_t *packet, uint8_t byte)
+{
+    if (packet == NULL) {
+        return;
+    }
+
+    packet->length = 1;
+    packet->data[0] = byte;
+    for (uint8_t i = 1; i < PACKET_DATA_LENGTH; i++) {
+        packet->data[i] = 0xff;
+    }
+    packet->crc = comms_compute_crc(packet);
 }
 
 static void comms_write_with_crc(comms_packet_t *packet, uint8_t crc)
@@ -61,18 +76,8 @@ void comms_setup(void)
     packet_write_index = 0;
     last_transmitted_packet_valid = false;
 
-    retx_packet.length = 1;
-    retx_packet.data[0] = PACKET_RETx_DATA0;
-    ack_packet.length = 1;
-    ack_packet.data[0] = PACKET_ACK_DATA0;
-
-    for (uint8_t i = 1; i < PACKET_DATA_LENGTH; i++) {
-        retx_packet.data[i] = 0xff;
-        ack_packet.data[i] = 0xff;
-    }
-
-    retx_packet.crc = comms_compute_crc(&retx_packet);
-    ack_packet.crc = comms_compute_crc(&ack_packet);
+    comms_create_single_byte_packet(&retx_packet, PACKET_RETx_DATA0);
+    comms_create_single_byte_packet(&ack_packet, PACKET_ACK_DATA0);
 }
 
 void comms_update(void)
