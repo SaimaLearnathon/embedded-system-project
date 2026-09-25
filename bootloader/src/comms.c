@@ -84,11 +84,24 @@ void comms_update(void)
 {
     while (uart_data_available()) {
         switch (state) {
-        case CommsState_length:
-            temporary_packet.length = uart_read_byte();
+        case CommsState_length: {
+            uint8_t length = uart_read_byte();
+            if (length > PACKET_DATA_LENGTH) {
+                /* Not a plausible frame start - almost certainly means the byte
+                 * stream has slipped out of alignment, not that a real frame
+                 * got corrupted. Asking for a retransmit can't fix a
+                 * receive-side offset (the resend just lands at the same
+                 * broken spot and fails the same way), so instead of
+                 * committing to 16 more bytes as if this were real data,
+                 * stay here and try the very next byte as a fresh length
+                 * candidate until the framing lines back up. */
+                break;
+            }
+            temporary_packet.length = length;
             data_byte_count = 0;
             state = CommsState_Data;
             break;
+        }
 
         case CommsState_Data:
             /* Every wire packet contains all 16 data bytes, including padding. */
@@ -102,8 +115,11 @@ void comms_update(void)
             temporary_packet.crc = uart_read_byte();
             state = CommsState_length;
 
-            if (temporary_packet.length > PACKET_DATA_LENGTH ||
-                temporary_packet.crc != comms_compute_crc(&temporary_packet)) {
+            /* The length byte is already known-valid by construction here.
+             * A CRC mismatch at this point means the frame WAS aligned but
+             * got corrupted in transit, which retransmission genuinely
+             * fixes. */
+            if (temporary_packet.crc != comms_compute_crc(&temporary_packet)) {
                 comms_write(&retx_packet);
                 break;
             }

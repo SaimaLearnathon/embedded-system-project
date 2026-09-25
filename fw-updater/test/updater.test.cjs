@@ -53,7 +53,7 @@ async function run(options = {}) {
         phase = 'device'; this.reply(0x37, 0x3c);
       } else if (phase === 'device') {
         assert.equal(bytes[1], 0x3f);
-        assert.equal(bytes[2], image[0x1b4]);
+        assert.equal(bytes[2], 0x42);
         phase = 'length'; this.reply(0x42);
       } else if (phase === 'length') {
         assert.equal(bytes.readUInt32LE(2), image.length);
@@ -79,6 +79,7 @@ async function run(options = {}) {
       }
     }
     drain(callback) { callback(null); }
+    flush(callback) { callback?.(null); }
     close(callback) { this.isOpen = false; this.emit('close'); callback(null); }
   }
   const context = {

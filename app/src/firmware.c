@@ -12,6 +12,10 @@
 #define LED_PORT  GPIOC
 #define LED_PIN   GPIO13
 
+static bool gpio_is_setup = false;
+
+void gpio_teardown(void);
+
 static void vector_setup(void){
 	SCB_VTOR = APP_START_ADDRESS;
 }
@@ -22,6 +26,19 @@ static void gpio_setup(void)
 	rcc_periph_clock_enable(RCC_GPIOC);
 	gpio_set_mode(LED_PORT, GPIO_MODE_OUTPUT_2_MHZ,
 	              GPIO_CNF_OUTPUT_PUSHPULL, LED_PIN);
+	gpio_is_setup = true;
+}
+
+void gpio_teardown(void)
+{
+	if (!gpio_is_setup) {
+		return;
+	}
+
+	gpio_set_mode(LED_PORT, GPIO_MODE_INPUT,
+	              GPIO_CNF_INPUT_FLOAT, LED_PIN);
+	rcc_periph_clock_disable(RCC_GPIOC);
+	gpio_is_setup = false;
 }
 
 int main(void)

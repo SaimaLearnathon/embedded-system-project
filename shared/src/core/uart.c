@@ -10,6 +10,8 @@
 static volatile uint8_t data_buffer[RING_BUFFER_SIZE] = {0U};
 
 static ring_buffer_t rb = {0U};
+static bool uart_is_setup = false;
+
 void uart_setup(void)
 {
 	if (!ring_buffer_setup(&rb, data_buffer, RING_BUFFER_SIZE)) {
@@ -33,6 +35,47 @@ void uart_setup(void)
 	usart_enable_rx_interrupt(USART1);
 	nvic_enable_irq(NVIC_USART1_IRQ);
 	usart_enable(USART1);
+	uart_is_setup = true;
+}
+
+void uart_teardown(void)
+{
+	if (!uart_is_setup) {
+		return;
+	}
+
+	while (usart_get_flag(USART1, USART_FLAG_TC) == 0) {
+		/* Wait until the last byte has fully left the shift register. */
+	}
+
+	usart_disable_rx_interrupt(USART1);
+	nvic_disable_irq(NVIC_USART1_IRQ);
+	nvic_clear_pending_irq(NVIC_USART1_IRQ);
+
+	usart_disable(USART1);
+	gpio_set_mode(GPIO_BANK_USART1_TX, GPIO_MODE_INPUT,
+		      GPIO_CNF_INPUT_FLOAT, GPIO_USART1_TX);
+	gpio_set_mode(GPIO_BANK_USART1_RX, GPIO_MODE_INPUT,
+		      GPIO_CNF_INPUT_FLOAT, GPIO_USART1_RX);
+	rcc_periph_clock_disable(RCC_USART1);
+
+	rb.read_index = 0U;
+	rb.write_index = 0U;
+	uart_is_setup = false;
+}
+
+void uart_flush_rx(void)
+{
+	if (!uart_is_setup) {
+		return;
+	}
+
+	usart_disable_rx_interrupt(USART1);
+	while (usart_get_flag(USART1, USART_FLAG_RXNE) != 0) {
+		(void)usart_recv(USART1);
+	}
+	rb.read_index = rb.write_index;
+	usart_enable_rx_interrupt(USART1);
 }
 
 void usart1_isr(void)

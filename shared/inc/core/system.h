@@ -8,6 +8,9 @@
 /* Initialise RCC, GPIO (on-board LED) and the SysTick 1 ms tick. */
 void system_setup(void);
 
+/* Stop SysTick and clear any pending SysTick exception. */
+void systick_teardown(void);
+
 /* Number of SysTick milliseconds elapsed since boot. */
 uint32_t system_get_ticks(void);
 

@@ -767,13 +767,33 @@ prepare_to_jump();
 SCB_VTOR = MAIN_APP_START_ADDRESS;
 ```
 
-`prepare_to_jump()` disables bootloader-related interrupt activity:
+`prepare_to_jump()` tears down the hardware state that belongs to the bootloader:
 
 ```c
-systick_interrupt_disable();
-systick_counter_disable();
-nvic_disable_irq(NVIC_USART1_IRQ);
+uart_teardown();
+systick_teardown();
 ```
+
+This is needed because jumping to the application is not the same as resetting the MCU. The CPU keeps running, and peripherals keep whatever configuration the bootloader left behind. If the bootloader enabled an interrupt or configured a peripheral, that state can still be active when the application starts.
+
+`uart_teardown()` cleans up USART1:
+
+1. Waits until the last UART byte has finished transmitting.
+2. Disables the USART1 RX interrupt.
+3. Disables and clears the USART1 NVIC interrupt.
+4. Disables USART1.
+5. Returns PA9 and PA10, the USART1 TX/RX pins, back to GPIO input mode.
+
+So a separate GPIO teardown is not needed for the UART pins. The UART setup owns those pins, and the UART teardown releases them.
+
+`systick_teardown()` cleans up SysTick:
+
+1. Disables the SysTick interrupt.
+2. Stops the SysTick counter.
+3. Clears the current SysTick value.
+4. Clears any pending SysTick exception.
+
+This prevents a bootloader SysTick interrupt from firing during or after the handoff.
 
 `SCB_VTOR` changes the vector table location to the application. This is necessary because interrupts should now use the application's handlers, not the bootloader's handlers.
 

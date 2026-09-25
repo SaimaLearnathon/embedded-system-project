@@ -1,4 +1,5 @@
 #include <libopencm3/stm32/rcc.h>
+#include <libopencm3/cm3/scb.h>
 #include <libopencm3/cm3/systick.h>
 
 #include "core/system.h"
@@ -23,6 +24,14 @@ static void systick_setup(void)
 	systick_clear();                  /* start counting from reload */
 	systick_interrupt_enable();       /* core exception, no NVIC needed */
 	systick_counter_enable();
+}
+
+void systick_teardown(void)
+{
+	systick_interrupt_disable();
+	systick_counter_disable();
+	systick_clear();
+	SCB_ICSR = SCB_ICSR_PENDSTCLR;
 }
 
 void system_setup(void)

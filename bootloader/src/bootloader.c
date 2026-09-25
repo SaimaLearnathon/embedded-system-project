@@ -1,7 +1,5 @@
 #include "common-defines.h"
-#include <libopencm3/cm3/nvic.h>
 #include <libopencm3/cm3/scb.h>
-#include <libopencm3/cm3/systick.h>
 #include <libopencm3/stm32/memorymap.h>
 #include "core/uart.h"
 #include "core/system.h"
@@ -16,13 +14,14 @@
 #define SRAM_BASE_ADDRESS (0x20000000U)
 #define SRAM_END_ADDRESS (SRAM_BASE_ADDRESS + (64U * 1024U))
 #define ENABLE_FLASH_WRITE_TEST (0U)
+#define ENABLE_UART_DIAGNOSTICS (0U)
 #define MAX_FW_LENGTH (FLASH_END_ADDRESS - MAIN_APP_START_ADDRESS)
 #define DEVICE_ID (0x42)
 #define SYNC_SEQ_0 (0xc4)
 #define SYNC_SEQ_1 (0x55)
 #define SYNC_SEQ_2 (0x7e)
 #define SYNC_SEQ_3 (0x10)
-#define DEFAULT_TIMEOUT (5000)
+#define DEFAULT_TIMEOUT (30000)
 
 typedef enum bl_state_t{
 	BL_State_Sync,
@@ -68,16 +67,17 @@ static bool application_is_valid(void)
 		(app_reset_address < FLASH_END_ADDRESS));
 }
 
+#if ENABLE_UART_DIAGNOSTICS
 /* Plain-text diagnostics for viewing in a raw serial terminal (e.g. PuTTY).
- * Do not run this in the same session as the fw-updater packet protocol:
- * it shares the UART with comms.c's fixed-length binary framing, and text
- * bytes mixed into that stream will desync the host's packet parser. */
+ * Keep disabled when using the fw-updater packet protocol: text bytes share
+ * the same UART and will desync the host's fixed-length packet parser. */
 static void uart_write_string(const char *s)
 {
 	while (*s) {
 		uart_write_byte((uint8_t)*s++);
 	}
 }
+#endif
 
 static void bootloading_fail(void){
 	comms_create_single_byte_packet(&packet,BL_PACKET_NACK_DATA0);
@@ -117,6 +117,7 @@ static bool is_fw_length_packet(const comms_packet_t* rx_packet){
 
 }
 
+#if ENABLE_UART_DIAGNOSTICS
 static void uart_write_hex32(uint32_t value)
 {
 	static const char hex_digits[] = "0123456789ABCDEF";
@@ -138,12 +139,12 @@ static void log_boot_diagnostics(void)
 	uart_write_hex32(app_reset);
 	uart_write_string(application_is_valid() ? " valid=YES\r\n" : " valid=NO\r\n");
 }
+#endif
 
 static void prepare_to_jump(void)
 {
-	systick_interrupt_disable();
-	systick_counter_disable();
-	nvic_disable_irq(NVIC_USART1_IRQ);
+	uart_teardown();
+	systick_teardown();
 }
 
 #if ENABLE_FLASH_WRITE_TEST
@@ -185,18 +186,14 @@ static void jump_to_main(void){
 int main(void)
 {
 	system_setup();
-	
 	uart_setup();
 #if ENABLE_FLASH_WRITE_TEST
 	run_flash_write_test();
 #endif
+#if ENABLE_UART_DIAGNOSTICS
 	log_boot_diagnostics();
-
-	
-
-	
-
 	uart_write_string("[bootloader] application invalid, waiting for updater\r\n");
+#endif
 	comms_setup();
 
 
@@ -222,6 +219,8 @@ int main(void)
 				is_match = is_match && (sync_seq[3] == SYNC_SEQ_3);
 				if(is_match){
 
+					uart_flush_rx();
+					comms_setup();
 					comms_create_single_byte_packet(&packet,BL_PACKET_SYNC_OBSERVED_DATA0);
 					comms_write(&packet);
 					simple_timer_reset(&timer);
@@ -368,6 +367,7 @@ int main(void)
 		
 	}
 	if (update_successful && application_is_valid()) {
+		system_delay(150);
 		jump_to_main();
 	}
 
